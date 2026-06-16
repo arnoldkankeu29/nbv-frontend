@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBV Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Fraunces:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: oklch(0.98 0.005 250);
+  --surface: oklch(1 0 0);
+  --border: oklch(0.88 0.01 250);
+  --text: oklch(0.15 0.02 250);
+  --muted: oklch(0.55 0.02 250);
+  --primary: oklch(0.45 0.18 270);
+  --primary-hover: oklch(0.38 0.18 270);
+  --accent: oklch(0.72 0.19 55);
+  --danger: oklch(0.55 0.2 25);
+  --success: oklch(0.52 0.15 155);
+  --radius: 12px;
+  --shadow: 0px 1px 3px rgba(0,0,0,0.08), 0px 4px 12px rgba(0,0,0,0.04);
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-inline: clamp(1rem, 5vw, 2rem);
+}
+
+/* AUTH */
+#auth-screen {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+}
+
+.auth-card h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+
+.auth-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+/* APP */
+#app-screen { display: none; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.topbar-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* NAV */
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 150ms;
+}
+
+.nav-btn:hover { background: var(--bg); color: var(--text); }
+.nav-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* PANELS */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* DASHBOARD */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.stat-value.accent { color: var(--accent); }
+.stat-value.primary { color: var(--primary); }
+.stat-value.success { color: var(--success); }
+
+/* FORMS */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  max-width: 560px;
+  box-shadow: var(--shadow);
+}
+
+.form-card h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.field { margin-bottom: 1.25rem; }
+
+.field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field input, .field select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 150ms;
+  outline: none;
+}
+
+.field input:focus, .field select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px oklch(0.45 0.18 270 / 0.12);
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  width: 100%;
+}
+
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-accent {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.9rem;
+}
+
+.btn-ghost:hover { background: var(--bg); color: var(--text); }
+
+/* ALERTS */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.alert.show { display: block; }
+.alert-error { background: oklch(0.96 0.05 25); color: var(--danger); border: 1px solid oklch(0.85 0.1 25); }
+.alert-success { background: oklch(0.96 0.05 155); color: var(--success); border: 1px solid oklch(0.85 0.1 155); }
+
+/* LEDGER TABLE */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th {
+  background: var(--bg);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+tr:last-child td { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-in { background: oklch(0.94 0.08 155); color: var(--success); }
+.badge-out { background: oklch(0.96 0.05 25); color: var(--danger); }
+
+/* RESULT BOX */
+.result-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  display: none;
+  word-break: break-all;
+}
+.result-box.show { display: block; }
+.result-box strong { display: block; margin-bottom: 0.25rem; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
+
+@media (max-width: 600px) {
+  .auth-card { padding: 1.75rem; }
+  .form-card { padding: 1.25rem; }
+  th, td { padding: 0.6rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <h1>NBV Foundation</h1>
+    <p>Child Recovery Platform — Staff Access</p>
+    <div class="alert alert-error" id="login-error"></div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@nbv.org">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••">
+    </div>
+    <button class="btn btn-primary" onclick="login()">Sign in</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <div class="topbar">
+    <span class="topbar-brand">NBV Foundation</span>
+    <div class="topbar-user">
+      <span id="user-name"></span>
+      <button class="btn btn-ghost" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showPanel('dashboard', this)">Dashboard</button>
+    <button class="nav-btn" onclick="showPanel('intake', this)">New Case</button>
+    <button class="nav-btn" onclick="showPanel('assessment', this)">Assessment</button>
+    <button class="nav-btn" onclick="showPanel('stage', this)">Advance Stage</button>
+    <button class="nav-btn" onclick="showPanel('ledger', this)">Ledger</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Cases</div>
+        <div class="stat-value primary" id="stat-total">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active</div>
+        <div class="stat-value accent" id="stat-active">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-value success" id="stat-completed">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Score</div>
+        <div class="stat-value" id="stat-score">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Balance (XAF)</div>
+        <div class="stat-value success" id="stat-balance">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Sessions</div>
+        <div class="stat-value" id="stat-sessions">—</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" onclick="loadDashboard()">↻ Refresh</button>
+  </div>
+
+  <!-- INTAKE -->
+  <div class="panel" id="panel-intake">
+    <div class="form-card">
+      <h2>Register New Case</h2>
+      <div class="alert alert-error" id="intake-error"></div>
+      <div class="alert alert-success" id="intake-success"></div>
+      <div class="field">
+        <label>Child Name</label>
+        <input type="text" id="intake-name" placeholder="Full name">
+      </div>
+      <div class="field">
+        <label>Date of Birth</label>
+        <input type="date" id="intake-dob">
+      </div>
+      <div class="field">
+        <label>Assigned Psychologist ID</label>
+        <input type="number" id="intake-psych" value="1">
+      </div>
+      <button class="btn btn-primary" onclick="submitIntake()">Register Case</button>
+      <div class="result-box" id="intake-result">
+        <strong>Case Hash (h_alpha)</strong>
+        <span id="intake-hash"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSESSMENT -->
+  <div class="panel" id="panel-assessment">
+    <div class="form-card">
+      <h2>Log Assessment</h2>
+      <div class="alert alert-error" id="assessment-error"></div>
+      <div class="alert alert-success" id="assessment-success"></div>
+      <div class="field">
+        <label>Case Hash (h_alpha)</label>
+        <input type="text" id="assessment-hash" placeholder="64-character hash">
+      </div>
+      <div class="field">
+        <label>Stage</label>
+        <select id="assessment-stage">
+          <option value="1">Stage 1</option>
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+          <option value="4">Stage 4</option>
+          <option value="5">Stage 5</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Score (0–100)</label>
+        <input type="number" id="assessment-score" min="0" max="100" placeholder="e.g. 67.5">
+      </div>
+      <div class="field">
+        <label>Assessed By (Psychologist ID)</label>
+        <input type="number" id="assessment-psych" value="1">
+      </div>
+      <button class="btn btn-primary" onclick="submitAssessment()">Submit Assessment</button>
+    </div>
+  </div>
+
+  <!-- STAGE -->
+  <div class="panel" id="panel-stage">
+    <div class="form-card">
+      <h2>Advance Recovery Stage</h2>
+      <div class="alert alert-error" id="stage-error"></div>
+      <div class="alert alert-success" id="stage-success"></div>
+      <div class="field">
+        <label>Case Hash (h_alpha)</label>
+        <input type="text" id="stage-hash" placeholder="64-character hash">
+      </div>
+      <div class="field">
+        <label>Advance to Stage</label>
+        <select id="stage-to">
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+          <option value="4">Stage 4</option>
+          <option value="5">Stage 5</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="submitStage()">Advance Stage</button>
+    </div>
+  </div>
+
+  <!-- LEDGER -->
+  <div class="panel" id="panel-ledger">
+    <div class="form-card" style="margin-bottom:1.5rem">
+      <h2>Record Transaction</h2>
+      <div class="alert alert-error" id="ledger-error"></div>
+      <div class="alert alert-success" id="ledger-success"></div>
+      <div class="field">
+        <label>Amount (XAF)</label>
+        <input type="number" id="ledger-amount" placeholder="e.g. 50000">
+      </div>
+      <div class="field">
+        <label>Direction</label>
+        <select id="ledger-direction">
+          <option value="in">Income</option>
+          <option value="out">Expense</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <input type="text" id="ledger-category" placeholder="e.g. donation, supplies">
+      </div>
+      <div class="field">
+        <label>Reference</label>
+        <input type="text" id="ledger-reference" placeholder="e.g. DON-2026-002">
+      </div>
+      <button class="btn btn-primary" onclick="submitTransaction()">Record</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody id="ledger-tbody">
+          <tr><td colspan="4" style="color:var(--muted);text-align:center">No transactions yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://nbv-foundation-production.up.railway.app';
+let TOKEN = '';
+
+function showAlert(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value;
+  const pass = document.getElementById('login-password').value;
+  try {
+    const res = await fetch(`${API}/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `username=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Login failed');
+    TOKEN = data.access_token;
+    const payload = JSON.parse(atob(TOKEN.split('.')[1]));
+    document.getElementById('user-name').textContent = payload.name;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'block';
+    loadDashboard();
+  } catch(e) {
+    showAlert('login-error', e.message);
+  }
+}
+
+function logout() {
+  TOKEN = '';
+  document.getElementById('auth-screen').style.display = '';
+  document.getElementById('app-screen').style.display = 'none';
+}
+
+function showPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${name}`).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'dashboard') loadDashboard();
+}
+
+async function loadDashboard() {
+  try {
+    const res = await fetch(`${API}/dashboard`, {
+      headers: { Authorization: `Bearer ${TOKEN}` }
+    });
+    const d = await res.json();
+    document.getElementById('stat-total').textContent = d.cases.total;
+    document.getElementById('stat-active').textContent = d.cases.active;
+    document.getElementById('stat-completed').textContent = d.cases.completed;
+    document.getElementById('stat-score').textContent = d.avg_assessment_score;
+    document.getElementById('stat-balance').textContent = d.financials.balance.toLocaleString();
+    document.getElementById('stat-sessions').textContent = d.sessions_delivered;
+  } catch(e) { console.error(e); }
+}
+
+async function submitIntake() {
+  try {
+    const res = await fetch(`${API}/intake`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+      body: JSON.stringify({
+        child_name: document.getElementById('intake-name').value,
+        birth_date: document.getElementById('intake-dob').value,
+        assigned_psych_id: parseInt(document.getElementById('intake-psych').value)
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    document.getElementById('intake-hash').textContent = d.h_alpha;
+    document.getElementById('intake-result').classList.add('show');
+    showAlert('intake-success', 'Case registered successfully.');
+  } catch(e) { showAlert('intake-error', e.message); }
+}
+
+async function submitAssessment() {
+  try {
+    const res = await fetch(`${API}/assessment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+      body: JSON.stringify({
+        h_alpha: document.getElementById('assessment-hash').value,
+        stage: parseInt(document.getElementById('assessment-stage').value),
+        score: parseFloat(document.getElementById('assessment-score').value),
+        assessed_by: parseInt(document.getElementById('assessment-psych').value)
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    showAlert('assessment-success', 'Assessment logged successfully.');
+  } catch(e) { showAlert('assessment-error', e.message); }
+}
+
+async function submitStage() {
+  try {
+    const res = await fetch(`${API}/advance-stage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+      body: JSON.stringify({
+        h_alpha: document.getElementById('stage-hash').value,
+        to_stage: parseInt(document.getElementById('stage-to').value)
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    showAlert('stage-success', `Advanced to stage ${d.to_stage} successfully.`);
+  } catch(e) { showAlert('stage-error', e.message); }
+}
+
+async function submitTransaction() {
+  try {
+    const res = await fetch(`${API}/transaction`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: parseFloat(document.getElementById('ledger-amount').value),
+        direction: document.getElementById('ledger-direction').value,
+        category: document.getElementById('ledger-category').value,
+        reference: document.getElementById('ledger-reference').value,
+        recorded_by: 1
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    showAlert('ledger-success', 'Transaction recorded.');
+    addLedgerRow(d);
+  } catch(e) { showAlert('ledger-error', e.message); }
+}
+
+function addLedgerRow(d) {
+  const tbody = document.getElementById('ledger-tbody');
+  if (tbody.querySelector('td[colspan]')) tbody.innerHTML = '';
+  const dir = document.getElementById('ledger-direction').value;
+  const row = `<tr>
+    <td>${document.getElementById('ledger-reference').value}</td>
+    <td>${document.getElementById('ledger-category').value}</td>
+    <td>${parseFloat(document.getElementById('ledger-amount').value).toLocaleString()} XAF</td>
+    <td><span class="badge badge-${dir}">${dir === 'in' ? 'Income' : 'Expense'}</span></td>
+  </tr>`;
+  tbody.insertAdjacentHTML('afterbegin', row);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.getElementById('auth-screen').style.display !== 'none' || !TOKEN) login();
+  }
+});
+</script>
+</body>
+</html>
