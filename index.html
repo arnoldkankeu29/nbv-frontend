@@ -19,159 +19,38 @@
   --accent: oklch(0.72 0.19 55);
   --danger: oklch(0.55 0.2 25);
   --success: oklch(0.52 0.15 155);
+  --warning: oklch(0.65 0.18 75);
   --radius: 12px;
   --shadow: 0px 1px 3px rgba(0,0,0,0.07), 0px 4px 12px rgba(0,0,0,0.04);
 }
 
-body {
-  font-family: 'Space Grotesk', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
+body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
 /* AUTH */
-#auth-screen {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 400px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2.5rem;
-  box-shadow: var(--shadow);
-}
-
-.auth-logo {
-  width: 40px;
-  height: 40px;
-  background: var(--primary);
-  border-radius: 10px;
-  margin-bottom: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.2rem;
-}
-
-.auth-card h1 {
-  font-family: 'Fraunces', serif;
-  font-size: 1.8rem;
-  margin-bottom: 0.25rem;
-}
-
+#auth-screen { min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
+.auth-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--shadow); }
+.auth-logo { width: 40px; height: 40px; background: var(--primary); border-radius: 10px; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
+.auth-card h1 { font-family: 'Fraunces', serif; font-size: 1.8rem; margin-bottom: 0.25rem; }
 .auth-card p { color: var(--muted); font-size: 0.875rem; margin-bottom: 2rem; }
 
 /* LAYOUT */
 #app-screen { display: none; min-height: 100vh; }
-
-.sidebar {
-  position: fixed;
-  left: 0; top: 0; bottom: 0;
-  width: 220px;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 1.5rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  z-index: 10;
-}
-
-.sidebar-brand {
-  font-family: 'Fraunces', serif;
-  font-size: 1.1rem;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.sidebar-brand span {
-  display: block;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.7rem;
-  color: var(--muted);
-  font-weight: 400;
-  margin-top: 0.1rem;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.875rem;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  transition: all 120ms;
-}
-
+.sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 220px; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 0.25rem; z-index: 10; }
+.sidebar-brand { font-family: 'Fraunces', serif; font-size: 1.1rem; padding: 0.5rem 0.75rem; margin-bottom: 1rem; }
+.sidebar-brand span { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; color: var(--muted); font-weight: 400; margin-top: 0.1rem; }
+.nav-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.75rem; border-radius: 8px; border: none; background: transparent; color: var(--muted); font-family: 'Space Grotesk', sans-serif; font-size: 0.875rem; cursor: pointer; text-align: left; width: 100%; transition: all 120ms; }
 .nav-item:hover { background: var(--bg); color: var(--text); }
 .nav-item.active { background: oklch(0.45 0.18 270 / 0.08); color: var(--primary); font-weight: 500; }
-
 .nav-icon { font-size: 1rem; width: 18px; text-align: center; }
-
-.sidebar-bottom {
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-}
-
-.user-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 8px;
-  background: var(--bg);
-  margin-bottom: 0.5rem;
-}
-
-.user-avatar {
-  width: 28px; height: 28px;
-  background: var(--primary);
-  border-radius: 50%;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
+.sidebar-bottom { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+.user-chip { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.75rem; border-radius: 8px; background: var(--bg); margin-bottom: 0.5rem; }
+.user-avatar { width: 28px; height: 28px; background: var(--primary); border-radius: 50%; color: white; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .user-info { min-width: 0; }
 .user-name { font-size: 0.8rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-role { font-size: 0.7rem; color: var(--muted); }
-
-.main {
-  margin-left: 220px;
-  padding: 2rem;
-  min-height: 100vh;
-}
-
-.page-header {
-  margin-bottom: 2rem;
-}
-
-.page-header h2 {
-  font-family: 'Fraunces', serif;
-  font-size: 1.75rem;
-  margin-bottom: 0.25rem;
-}
-
+.main { margin-left: 220px; padding: 2rem; min-height: 100vh; }
+.page-header { margin-bottom: 2rem; }
+.page-header h2 { font-family: 'Fraunces', serif; font-size: 1.75rem; margin-bottom: 0.25rem; }
 .page-header p { color: var(--muted); font-size: 0.875rem; }
 
 /* PANELS */
@@ -179,235 +58,128 @@ body {
 .panel.active { display: block; }
 
 /* STATS */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
-  box-shadow: var(--shadow);
-}
-
-.stat-label {
-  font-size: 0.72rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.6rem;
-}
-
-.stat-value {
-  font-family: 'Fraunces', serif;
-  font-size: 2.2rem;
-  line-height: 1;
-  margin-bottom: 0.25rem;
-}
-
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; box-shadow: var(--shadow); }
+.stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+.stat-value { font-family: 'Fraunces', serif; font-size: 2.2rem; line-height: 1; margin-bottom: 0.25rem; }
 .stat-sub { font-size: 0.75rem; color: var(--muted); }
 .stat-value.accent { color: var(--accent); }
 .stat-value.primary { color: var(--primary); }
 .stat-value.success { color: var(--success); }
+.stat-value.warning { color: var(--warning); }
 
 /* CARDS */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-.card-header {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 1.5rem; }
+.card-header { padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .card-header h3 { font-size: 0.95rem; font-weight: 500; }
 .card-body { padding: 1.5rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
+/* CASE LIST */
+.case-row { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 120ms; gap: 1rem; }
+.case-row:last-child { border-bottom: none; }
+.case-row:hover { background: var(--bg); }
+.case-meta { flex: 1; min-width: 0; }
+.case-hash { font-size: 0.75rem; color: var(--muted); font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+.case-info { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.2rem; }
+.case-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
 
-/* EMPTY STATE */
-.empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--muted);
-}
+/* STAGE PILL */
+.stage-pill { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 500; }
+.stage-1 { background: oklch(0.94 0.05 270); color: var(--primary); }
+.stage-2 { background: oklch(0.94 0.08 55); color: var(--accent); }
+.stage-3 { background: oklch(0.94 0.06 200); color: oklch(0.45 0.15 200); }
+.stage-4 { background: oklch(0.94 0.08 155); color: var(--success); }
+.stage-5 { background: oklch(0.94 0.1 155); color: oklch(0.38 0.15 155); }
 
-.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-.empty-state p { font-size: 0.875rem; }
+/* OVERDUE */
+.overdue-badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem; background: oklch(0.96 0.05 25); color: var(--danger); }
+
+/* CASE DETAIL */
+#case-detail-panel { display: none; }
+#case-detail-panel.active { display: block; }
+.detail-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.back-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1.2rem; padding: 0.25rem; }
+.back-btn:hover { color: var(--text); }
+.detail-hash { font-family: monospace; font-size: 0.75rem; color: var(--muted); word-break: break-all; background: var(--bg); padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid var(--border); }
+
+/* SCORE HISTORY */
+.score-timeline { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.25rem 1.5rem; }
+.score-entry { display: flex; align-items: center; gap: 1rem; }
+.score-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.score-bar { height: 100%; border-radius: 999px; background: var(--primary); transition: width 0.4s; }
+.score-num { font-family: 'Fraunces', serif; font-size: 1.1rem; min-width: 40px; text-align: right; }
+.score-date { font-size: 0.72rem; color: var(--muted); min-width: 80px; }
+
+/* VELOCITY */
+.velocity-card { background: oklch(0.45 0.18 270 / 0.06); border: 1px solid oklch(0.45 0.18 270 / 0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; }
+.velocity-value { font-family: 'Fraunces', serif; font-size: 2.5rem; color: var(--primary); }
+.velocity-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.velocity-desc { font-size: 0.875rem; color: var(--text); margin-top: 0.25rem; }
+
+/* SESSIONS */
+.session-entry { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+.session-entry:last-child { border-bottom: none; }
+.session-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
 
 /* FORMS */
-.form-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2rem;
-  max-width: 520px;
-  box-shadow: var(--shadow);
-}
-
-.form-card h2 {
-  font-family: 'Fraunces', serif;
-  font-size: 1.4rem;
-  margin-bottom: 0.25rem;
-}
-
-.form-card .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.75rem; }
-
+.form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; max-width: 520px; box-shadow: var(--shadow); }
+.form-card h2 { font-family: 'Fraunces', serif; font-size: 1.4rem; margin-bottom: 0.25rem; }
+.form-subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.75rem; }
 .field { margin-bottom: 1.1rem; }
-
-.field label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--muted);
-  margin-bottom: 0.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.field input, .field select {
-  width: 100%;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.9rem;
-  background: var(--bg);
-  color: var(--text);
-  transition: border-color 150ms;
-  outline: none;
-}
-
-.field input:focus, .field select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px oklch(0.45 0.18 270 / 0.1);
-}
+.field label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.field input, .field select { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; background: var(--bg); color: var(--text); transition: border-color 150ms; outline: none; }
+.field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px oklch(0.45 0.18 270 / 0.1); }
 
 /* BUTTONS */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.4rem;
-  border-radius: 8px;
-  border: none;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 150ms;
-}
-
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.7rem 1.4rem; border-radius: 8px; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 150ms; }
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 0.5rem; }
 .btn-primary:hover { background: var(--primary-hover); }
-.btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+.btn-sm { padding: 0.35rem 0.8rem; font-size: 0.78rem; }
 .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--bg); color: var(--text); }
+.btn-danger { background: oklch(0.96 0.05 25); color: var(--danger); border: 1px solid oklch(0.85 0.1 25); }
 
 /* ALERTS */
-.alert {
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  display: none;
-}
+.alert { padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
 .alert.show { display: block; }
 .alert-error { background: oklch(0.96 0.05 25); color: var(--danger); border: 1px solid oklch(0.85 0.1 25); }
 .alert-success { background: oklch(0.96 0.05 155); color: var(--success); border: 1px solid oklch(0.85 0.1 155); }
 
 /* RESULT BOX */
-.result-box {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: oklch(0.45 0.18 270 / 0.06);
-  border: 1px solid oklch(0.45 0.18 270 / 0.2);
-  border-radius: 8px;
-  font-size: 0.8rem;
-  display: none;
-  word-break: break-all;
-}
+.result-box { margin-top: 1rem; padding: 1rem; background: oklch(0.45 0.18 270 / 0.06); border: 1px solid oklch(0.45 0.18 270 / 0.2); border-radius: 8px; font-size: 0.8rem; display: none; word-break: break-all; }
 .result-box.show { display: block; }
 .result-box strong { display: block; margin-bottom: 0.4rem; color: var(--primary); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
 
 /* TABLE */
 table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-th {
-  padding: 0.7rem 1rem;
-  text-align: left;
-  font-size: 0.7rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-}
+th { padding: 0.7rem 1rem; text-align: left; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); background: var(--bg); }
 td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--bg); }
-
-.badge {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 500;
-}
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 500; }
 .badge-in { background: oklch(0.94 0.08 155); color: var(--success); }
 .badge-out { background: oklch(0.96 0.05 25); color: var(--danger); }
 .badge-role { background: oklch(0.45 0.18 270 / 0.1); color: var(--primary); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.empty-state p { font-size: 0.875rem; }
 
 /* MOBILE */
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 1rem; }
-  .mobile-nav {
-    display: flex;
-    overflow-x: auto;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1.5rem;
-    -webkit-overflow-scrolling: touch;
-  }
-  .mobile-nav-btn {
-    padding: 0.45rem 1rem;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.8rem;
-    cursor: pointer;
-    white-space: nowrap;
-  }
+  .mobile-nav { display: flex; overflow-x: auto; gap: 0.5rem; padding: 0.75rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; -webkit-overflow-scrolling: touch; }
+  .mobile-nav-btn { padding: 0.45rem 1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
   .mobile-nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   .two-col { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
+  .case-hash { max-width: 120px; }
 }
-
-@media (min-width: 769px) {
-  .mobile-nav { display: none; }
-}
+@media (min-width: 769px) { .mobile-nav { display: none; } }
 </style>
 </head>
 <body>
@@ -419,60 +191,31 @@ tr:hover td { background: var(--bg); }
     <h1>NBV Foundation</h1>
     <p>Child Recovery Platform — Staff Access Only</p>
     <div class="alert alert-error" id="login-error"></div>
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="login-email" placeholder="you@nbv.org">
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="login-password" placeholder="••••••••">
-    </div>
+    <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@nbv.org"></div>
+    <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
     <button class="btn btn-primary" onclick="login()">Sign in →</button>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app-screen">
-
-  <!-- SIDEBAR (desktop) -->
   <div class="sidebar">
-    <div class="sidebar-brand">
-      NBV Foundation
-      <span>Child Recovery Platform</span>
-    </div>
-
-    <div id="nav-dashboard" class="nav-item active" onclick="showPanel('dashboard', 'nav-dashboard')">
-      <span class="nav-icon">◈</span> Dashboard
-    </div>
-    <div id="nav-intake" class="nav-item psych-only" onclick="showPanel('intake', 'nav-intake')">
-      <span class="nav-icon">＋</span> New Case
-    </div>
-    <div id="nav-assessment" class="nav-item psych-only" onclick="showPanel('assessment', 'nav-assessment')">
-      <span class="nav-icon">✎</span> Assessment
-    </div>
-    <div id="nav-stage" class="nav-item psych-only" onclick="showPanel('stage', 'nav-stage')">
-      <span class="nav-icon">↑</span> Advance Stage
-    </div>
-    <div id="nav-ledger" class="nav-item admin-only secretary-only" onclick="showPanel('ledger', 'nav-ledger')">
-      <span class="nav-icon">₣</span> Ledger
-    </div>
-
+    <div class="sidebar-brand">NBV Foundation<span>Child Recovery Platform</span></div>
+    <div id="nav-dashboard" class="nav-item active" onclick="showPanel('dashboard','nav-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+    <div id="nav-cases" class="nav-item psych-only" onclick="showPanel('cases','nav-cases')"><span class="nav-icon">👥</span> My Cases</div>
+    <div id="nav-intake" class="nav-item psych-only" onclick="showPanel('intake','nav-intake')"><span class="nav-icon">＋</span> New Case</div>
+    <div id="nav-ledger" class="nav-item ledger-only" onclick="showPanel('ledger','nav-ledger')"><span class="nav-icon">₣</span> Ledger</div>
     <div class="sidebar-bottom">
       <div class="user-chip">
         <div class="user-avatar" id="user-avatar">—</div>
-        <div class="user-info">
-          <div class="user-name" id="user-name">—</div>
-          <div class="user-role" id="user-role">—</div>
-        </div>
+        <div class="user-info"><div class="user-name" id="user-name">—</div><div class="user-role" id="user-role">—</div></div>
       </div>
       <button class="btn btn-ghost btn-sm" style="width:100%" onclick="logout()">Sign out</button>
     </div>
   </div>
 
-  <!-- MOBILE NAV -->
   <div class="mobile-nav" id="mobile-nav"></div>
 
-  <!-- MAIN CONTENT -->
   <div class="main">
 
     <!-- DASHBOARD -->
@@ -481,69 +224,96 @@ tr:hover td { background: var(--bg); }
         <h2 id="dash-greeting">Good morning</h2>
         <p>Here's what's happening at the foundation today.</p>
       </div>
-
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Cases</div>
-          <div class="stat-value primary" id="stat-total">—</div>
-          <div class="stat-sub">registered</div>
+        <div class="stat-card"><div class="stat-label">Total Cases</div><div class="stat-value primary" id="stat-total">—</div><div class="stat-sub">registered</div></div>
+        <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value accent" id="stat-active">—</div><div class="stat-sub">in recovery</div></div>
+        <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value success" id="stat-completed">—</div><div class="stat-sub">stage 5 reached</div></div>
+        <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" id="stat-score">—</div><div class="stat-sub">across assessments</div></div>
+        <div class="stat-card ledger-only"><div class="stat-label">Balance</div><div class="stat-value success" id="stat-balance">—</div><div class="stat-sub">XAF available</div></div>
+        <div class="stat-card"><div class="stat-label">Sessions</div><div class="stat-value" id="stat-sessions">—</div><div class="stat-sub">delivered</div></div>
+        <div class="stat-card psych-only"><div class="stat-label">Overdue</div><div class="stat-value warning" id="stat-overdue">—</div><div class="stat-sub">need attention</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card psych-only">
+          <div class="card-header"><h3>Overdue Cases</h3></div>
+          <div id="dash-overdue"><div class="empty-state"><div class="empty-icon">✓</div><p>No overdue cases</p></div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Active</div>
-          <div class="stat-value accent" id="stat-active">—</div>
-          <div class="stat-sub">in recovery</div>
+        <div class="card">
+          <div class="card-header"><h3>Foundation Info</h3></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:1rem">
+            <div><div class="stat-label">Privacy</div><div style="font-size:0.875rem">All child records pseudonymized — zero PII stored</div></div>
+            <div><div class="stat-label">Your Role</div><div style="font-size:0.875rem"><span class="badge badge-role" id="dash-role">—</span></div></div>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Completed</div>
-          <div class="stat-value success" id="stat-completed">—</div>
-          <div class="stat-sub">stage 5 reached</div>
+      </div>
+    </div>
+
+    <!-- MY CASES -->
+    <div class="panel" id="panel-cases">
+      <div class="page-header">
+        <h2>My Cases</h2>
+        <p>All children assigned to you. Click a case to view details.</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Assigned Cases</h3>
+          <button class="btn btn-ghost btn-sm" onclick="loadMyCases()">↻ Refresh</button>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Avg Score</div>
-          <div class="stat-value" id="stat-score">—</div>
-          <div class="stat-sub">across all assessments</div>
+        <div id="cases-list"><div class="empty-state"><div class="empty-icon">👥</div><p>Loading cases...</p></div></div>
+      </div>
+    </div>
+
+    <!-- CASE DETAIL -->
+    <div id="case-detail-panel">
+      <div class="detail-header">
+        <button class="back-btn" onclick="backToCases()">← </button>
+        <div>
+          <h2 style="font-family:'Fraunces',serif;font-size:1.5rem;margin-bottom:0.25rem">Case Detail</h2>
+          <div class="detail-hash" id="detail-hash">—</div>
         </div>
-        <div class="stat-card admin-only secretary-only">
-          <div class="stat-label">Balance</div>
-          <div class="stat-value success" id="stat-balance">—</div>
-          <div class="stat-sub">XAF available</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Sessions</div>
-          <div class="stat-value" id="stat-sessions">—</div>
-          <div class="stat-sub">delivered</div>
+      </div>
+
+      <div id="velocity-section" style="display:none">
+        <div class="velocity-card">
+          <div>
+            <div class="velocity-label">Recovery Velocity</div>
+            <div class="velocity-value" id="detail-velocity">—</div>
+          </div>
+          <div>
+            <div class="velocity-desc" id="detail-velocity-desc">points per day</div>
+          </div>
         </div>
       </div>
 
       <div class="two-col">
-        <div class="card admin-only secretary-only">
-          <div class="card-header">
-            <h3>Recent Transactions</h3>
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Assessment History</h3>
+              <button class="btn btn-ghost btn-sm" onclick="openAssessmentModal()">+ Add</button>
+            </div>
+            <div id="detail-assessments"><div class="empty-state"><p>No assessments yet</p></div></div>
           </div>
-          <div id="dash-transactions">
-            <div class="empty-state">
-              <div class="empty-icon">₣</div>
-              <p>No transactions yet</p>
+
+          <div class="card">
+            <div class="card-header"><h3>Stage</h3></div>
+            <div class="card-body">
+              <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+                <div class="stage-pill stage-1" id="detail-stage-pill">Stage —</div>
+                <span style="font-size:0.875rem;color:var(--muted)" id="detail-stage-name">—</span>
+              </div>
+              <button class="btn btn-primary" style="width:auto;margin-top:0" onclick="advanceStageFromDetail()">Advance to Next Stage →</button>
             </div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-header">
-            <h3>Foundation Overview</h3>
-          </div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:1rem">
-            <div>
-              <div class="stat-label">Platform</div>
-              <div style="font-size:0.875rem">NBV Child Recovery System</div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Sessions</h3>
+              <button class="btn btn-ghost btn-sm" onclick="logSessionFromDetail()">+ Log Session</button>
             </div>
-            <div>
-              <div class="stat-label">Data Privacy</div>
-              <div style="font-size:0.875rem">All child records pseudonymized at intake — zero PII stored</div>
-            </div>
-            <div>
-              <div class="stat-label">Your Role</div>
-              <div style="font-size:0.875rem"><span class="badge badge-role" id="dash-role">—</span></div>
-            </div>
+            <div id="detail-sessions"><div class="empty-state"><p>No sessions logged</p></div></div>
           </div>
         </div>
       </div>
@@ -551,144 +321,40 @@ tr:hover td { background: var(--bg); }
 
     <!-- INTAKE -->
     <div class="panel" id="panel-intake">
-      <div class="page-header">
-        <h2>Register New Case</h2>
-        <p>The child's identity will be immediately anonymized upon registration.</p>
-      </div>
+      <div class="page-header"><h2>Register New Case</h2><p>The child's identity will be immediately anonymized upon registration.</p></div>
       <div class="form-card">
         <div class="alert alert-error" id="intake-error"></div>
         <div class="alert alert-success" id="intake-success"></div>
-        <div class="field">
-          <label>Child Name</label>
-          <input type="text" id="intake-name" placeholder="Full name">
-        </div>
-        <div class="field">
-          <label>Date of Birth</label>
-          <input type="date" id="intake-dob">
-        </div>
-        <div class="field">
-          <label>Assigned Psychologist ID</label>
-          <input type="number" id="intake-psych" value="1">
-        </div>
+        <div class="field"><label>Child Name</label><input type="text" id="intake-name" placeholder="Full name"></div>
+        <div class="field"><label>Date of Birth</label><input type="date" id="intake-dob"></div>
+        <div class="field"><label>Assigned Psychologist ID</label><input type="number" id="intake-psych" value="1"></div>
         <button class="btn btn-primary" onclick="submitIntake()">Register Case →</button>
         <div class="result-box" id="intake-result">
-          <strong>Case Hash (h_alpha) — save this</strong>
+          <strong>Case Hash (h_alpha) — save this immediately</strong>
           <span id="intake-hash"></span>
         </div>
       </div>
     </div>
 
-    <!-- ASSESSMENT -->
-    <div class="panel" id="panel-assessment">
-      <div class="page-header">
-        <h2>Log Assessment</h2>
-        <p>Record a clinical score for a case at a given recovery stage.</p>
-      </div>
-      <div class="form-card">
-        <div class="alert alert-error" id="assessment-error"></div>
-        <div class="alert alert-success" id="assessment-success"></div>
-        <div class="field">
-          <label>Case Hash (h_alpha)</label>
-          <input type="text" id="assessment-hash" placeholder="64-character hash">
-        </div>
-        <div class="field">
-          <label>Stage</label>
-          <select id="assessment-stage">
-            <option value="1">Stage 1 — Initial</option>
-            <option value="2">Stage 2 — Stabilization</option>
-            <option value="3">Stage 3 — Processing</option>
-            <option value="4">Stage 4 — Integration</option>
-            <option value="5">Stage 5 — Recovery</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Score (0–100)</label>
-          <input type="number" id="assessment-score" min="0" max="100" placeholder="e.g. 67.5">
-        </div>
-        <div class="field">
-          <label>Assessed By (Psychologist ID)</label>
-          <input type="number" id="assessment-psych" value="1">
-        </div>
-        <button class="btn btn-primary" onclick="submitAssessment()">Submit Assessment →</button>
-      </div>
-    </div>
-
-    <!-- STAGE -->
-    <div class="panel" id="panel-stage">
-      <div class="page-header">
-        <h2>Advance Recovery Stage</h2>
-        <p>Move a case to the next stage. Stages must progress in order: 1 → 2 → 3 → 4 → 5.</p>
-      </div>
-      <div class="form-card">
-        <div class="alert alert-error" id="stage-error"></div>
-        <div class="alert alert-success" id="stage-success"></div>
-        <div class="field">
-          <label>Case Hash (h_alpha)</label>
-          <input type="text" id="stage-hash" placeholder="64-character hash">
-        </div>
-        <div class="field">
-          <label>Advance to Stage</label>
-          <select id="stage-to">
-            <option value="2">Stage 2 — Stabilization</option>
-            <option value="3">Stage 3 — Processing</option>
-            <option value="4">Stage 4 — Integration</option>
-            <option value="5">Stage 5 — Recovery</option>
-          </select>
-        </div>
-        <button class="btn btn-primary" onclick="submitStage()">Advance Stage →</button>
-      </div>
-    </div>
-
     <!-- LEDGER -->
     <div class="panel" id="panel-ledger">
-      <div class="page-header">
-        <h2>Financial Ledger</h2>
-        <p>Record and track all foundation income and expenses.</p>
-      </div>
-
+      <div class="page-header"><h2>Financial Ledger</h2><p>Record and track all foundation income and expenses.</p></div>
       <div class="two-col">
         <div class="form-card" style="max-width:100%">
           <h2>Record Transaction</h2>
-          <p class="subtitle">All transactions are permanently logged and audited.</p>
+          <p class="form-subtitle">All transactions are permanently logged and audited.</p>
           <div class="alert alert-error" id="ledger-error"></div>
           <div class="alert alert-success" id="ledger-success"></div>
-          <div class="field">
-            <label>Amount (XAF)</label>
-            <input type="number" id="ledger-amount" placeholder="e.g. 50000">
-          </div>
-          <div class="field">
-            <label>Direction</label>
-            <select id="ledger-direction">
-              <option value="in">Income</option>
-              <option value="out">Expense</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Category</label>
-            <input type="text" id="ledger-category" placeholder="e.g. donation, supplies">
-          </div>
-          <div class="field">
-            <label>Reference</label>
-            <input type="text" id="ledger-reference" placeholder="e.g. DON-2026-002">
-          </div>
+          <div class="field"><label>Amount (XAF)</label><input type="number" id="ledger-amount" placeholder="e.g. 50000"></div>
+          <div class="field"><label>Direction</label><select id="ledger-direction"><option value="in">Income</option><option value="out">Expense</option></select></div>
+          <div class="field"><label>Category</label><input type="text" id="ledger-category" placeholder="e.g. donation, supplies"></div>
+          <div class="field"><label>Reference</label><input type="text" id="ledger-reference" placeholder="e.g. DON-2026-002"></div>
           <button class="btn btn-primary" onclick="submitTransaction()">Record Transaction →</button>
         </div>
-
         <div class="card" style="height:fit-content">
           <div class="card-header"><h3>Transaction History</h3></div>
-          <table>
-            <thead>
-              <tr>
-                <th>Reference</th>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody id="ledger-tbody">
-              <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">Loading...</td></tr>
-            </tbody>
-          </table>
+          <table><thead><tr><th>Reference</th><th>Category</th><th>Amount</th><th>Type</th></tr></thead>
+          <tbody id="ledger-tbody"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">Loading...</td></tr></tbody></table>
         </div>
       </div>
     </div>
@@ -696,14 +362,29 @@ tr:hover td { background: var(--bg); }
   </div>
 </div>
 
+<!-- ASSESSMENT MODAL (inline) -->
+<div id="assessment-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem">
+  <div style="background:var(--surface);border-radius:var(--radius);padding:2rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.15)">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:1.25rem">Log Assessment</h3>
+    <div class="alert alert-error" id="modal-assessment-error"></div>
+    <div class="alert alert-success" id="modal-assessment-success"></div>
+    <div class="field"><label>Stage</label><select id="modal-stage"><option value="1">Stage 1</option><option value="2">Stage 2</option><option value="3">Stage 3</option><option value="4">Stage 4</option><option value="5">Stage 5</option></select></div>
+    <div class="field"><label>Score (0–100)</label><input type="number" id="modal-score" min="0" max="100" placeholder="e.g. 67.5"></div>
+    <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeAssessmentModal()">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;margin-top:0" onclick="submitModalAssessment()">Submit</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const API = 'https://nbv-foundation-production.up.railway.app';
-let TOKEN = '';
-let USER = {};
+let TOKEN = '', USER = {}, CURRENT_CASE = null;
 
+const STAGE_NAMES = { 1:'Initial', 2:'Stabilization', 3:'Processing', 4:'Integration', 5:'Recovery' };
 const ROLE_NAV = {
-  psychologist: ['dashboard','intake','assessment','stage'],
-  admin: ['dashboard','intake','assessment','stage','ledger'],
+  psychologist: ['dashboard','cases','intake'],
+  admin: ['dashboard','cases','intake','ledger'],
   auditor: ['dashboard'],
   secretary: ['dashboard','ledger']
 };
@@ -717,9 +398,7 @@ function showAlert(id, msg) {
 
 function greeting() {
   const h = new Date().getHours();
-  if (h < 12) return 'Good morning';
-  if (h < 17) return 'Good afternoon';
-  return 'Good evening';
+  return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
 }
 
 async function login() {
@@ -736,55 +415,45 @@ async function login() {
     TOKEN = data.access_token;
     USER = JSON.parse(atob(TOKEN.split('.')[1]));
     initApp();
-  } catch(e) {
-    showAlert('login-error', e.message);
-  }
+  } catch(e) { showAlert('login-error', e.message); }
 }
 
 function initApp() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'block';
-
-  // User info
   document.getElementById('user-name').textContent = USER.name;
   document.getElementById('user-role').textContent = USER.role;
   document.getElementById('user-avatar').textContent = USER.name.charAt(0).toUpperCase();
   document.getElementById('dash-role').textContent = USER.role;
   document.getElementById('dash-greeting').textContent = `${greeting()}, ${USER.name.split(' ')[0]}`;
-
-  // Role-based nav
-  const allowed = ROLE_NAV[USER.role] || ['dashboard'];
-  applyRoleVisibility(allowed);
-  buildMobileNav(allowed);
+  applyRoleVisibility();
+  buildMobileNav();
   loadDashboard();
 }
 
-function applyRoleVisibility(allowed) {
+function applyRoleVisibility() {
+  const allowed = ROLE_NAV[USER.role] || ['dashboard'];
   document.querySelectorAll('.psych-only').forEach(el => {
-    el.style.display = allowed.includes('intake') ? '' : 'none';
+    el.style.display = (USER.role === 'psychologist' || USER.role === 'admin') ? '' : 'none';
   });
-  document.querySelectorAll('.admin-only').forEach(el => {
-    el.style.display = (USER.role === 'admin') ? '' : 'none';
-  });
-  document.querySelectorAll('.secretary-only').forEach(el => {
+  document.querySelectorAll('.ledger-only').forEach(el => {
     el.style.display = (USER.role === 'admin' || USER.role === 'secretary') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(el => {
+    const id = el.id?.replace('nav-', '');
+    if (id && !allowed.includes(id)) el.style.display = 'none';
   });
 }
 
-function buildMobileNav(allowed) {
-  const labels = {
-    dashboard: '◈ Dashboard',
-    intake: '＋ New Case',
-    assessment: '✎ Assessment',
-    stage: '↑ Stage',
-    ledger: '₣ Ledger'
-  };
+function buildMobileNav() {
+  const allowed = ROLE_NAV[USER.role] || ['dashboard'];
+  const labels = { dashboard:'◈ Dashboard', cases:'👥 My Cases', intake:'＋ New Case', ledger:'₣ Ledger' };
   const nav = document.getElementById('mobile-nav');
   nav.innerHTML = '';
   allowed.forEach((key, i) => {
     const btn = document.createElement('button');
     btn.className = 'mobile-nav-btn' + (i === 0 ? ' active' : '');
-    btn.textContent = labels[key];
+    btn.textContent = labels[key] || key;
     btn.onclick = () => {
       document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -797,18 +466,17 @@ function buildMobileNav(allowed) {
 function showPanel(name, navId) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.getElementById(`panel-${name}`).classList.add('active');
-  const navEl = document.getElementById(navId);
-  if (navEl) navEl.classList.add('active');
+  document.getElementById('case-detail-panel').classList.remove('active');
+  document.getElementById(`panel-${name}`)?.classList.add('active');
+  document.getElementById(navId)?.classList.add('active');
   if (name === 'dashboard') loadDashboard();
+  if (name === 'cases') loadMyCases();
   if (name === 'ledger') loadTransactions();
 }
 
 async function loadDashboard() {
   try {
-    const res = await fetch(`${API}/dashboard`, {
-      headers: { Authorization: `Bearer ${TOKEN}` }
-    });
+    const res = await fetch(`${API}/dashboard`, { headers: { Authorization: `Bearer ${TOKEN}` } });
     const d = await res.json();
     document.getElementById('stat-total').textContent = d.cases.total;
     document.getElementById('stat-active').textContent = d.cases.active;
@@ -816,47 +484,172 @@ async function loadDashboard() {
     document.getElementById('stat-score').textContent = d.avg_assessment_score;
     document.getElementById('stat-balance').textContent = d.financials.balance.toLocaleString();
     document.getElementById('stat-sessions').textContent = d.sessions_delivered;
-    loadDashTransactions();
-  } catch(e) { console.error(e); }
-}
-
-async function loadDashTransactions() {
-  if (USER.role !== 'admin' && USER.role !== 'secretary') return;
-  try {
-    const res = await fetch(`${API}/transactions`);
-    const d = await res.json();
-    const container = document.getElementById('dash-transactions');
-    if (!d.transactions.length) return;
-    container.innerHTML = `<table>
-      <thead><tr><th>Reference</th><th>Amount</th><th>Type</th></tr></thead>
-      <tbody>${d.transactions.slice(0,5).map(t => `
-        <tr>
-          <td>${t.reference}</td>
-          <td>${t.amount.toLocaleString()} ${t.currency}</td>
-          <td><span class="badge badge-${t.direction}">${t.direction === 'in' ? 'Income' : 'Expense'}</span></td>
-        </tr>`).join('')}
-      </tbody>
-    </table>`;
   } catch(e) {}
+
+  if (USER.role === 'psychologist' || USER.role === 'admin') loadOverdue();
 }
 
-async function loadTransactions() {
+async function loadOverdue() {
   try {
-    const res = await fetch(`${API}/transactions`);
+    const res = await fetch(`${API}/cases/overdue`, { headers: { Authorization: `Bearer ${TOKEN}` } });
     const d = await res.json();
-    const tbody = document.getElementById('ledger-tbody');
-    if (!d.transactions.length) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No transactions yet</td></tr>';
+    document.getElementById('stat-overdue').textContent = d.overdue.length;
+    const container = document.getElementById('dash-overdue');
+    if (!d.overdue.length) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">✓</div><p>No overdue cases</p></div>';
       return;
     }
-    tbody.innerHTML = d.transactions.map(t => `
-      <tr>
-        <td>${t.reference}</td>
-        <td>${t.category}</td>
-        <td>${t.amount.toLocaleString()} ${t.currency}</td>
-        <td><span class="badge badge-${t.direction}">${t.direction === 'in' ? 'Income' : 'Expense'}</span></td>
-      </tr>`).join('');
+    container.innerHTML = d.overdue.map(c => `
+      <div class="case-row" onclick="openCase('${c.h_alpha}')">
+        <div class="case-meta">
+          <div class="case-info">Stage ${c.current_stage} — ${STAGE_NAMES[c.current_stage]}</div>
+          <div class="case-hash">${c.h_alpha}</div>
+        </div>
+        <span class="overdue-badge">Overdue</span>
+      </div>`).join('');
   } catch(e) {}
+}
+
+async function loadMyCases() {
+  const container = document.getElementById('cases-list');
+  try {
+    const res = await fetch(`${API}/my-cases/${USER.id}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const d = await res.json();
+    if (!d.cases.length) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>No cases assigned yet</p></div>';
+      return;
+    }
+    container.innerHTML = d.cases.map(c => `
+      <div class="case-row" onclick="openCase('${c.h_alpha}')">
+        <div class="case-meta">
+          <div class="case-info">
+            Stage ${c.current_stage} · ${c.session_count} session${c.session_count !== 1 ? 's' : ''}
+            ${c.last_score !== null ? `· Last score: ${c.last_score}` : ''}
+            ${c.overdue ? '<span class="overdue-badge" style="margin-left:0.5rem">Overdue</span>' : ''}
+          </div>
+          <div class="case-hash">${c.h_alpha}</div>
+        </div>
+        <div class="case-actions">
+          <span class="stage-pill stage-${c.current_stage}">Stage ${c.current_stage}</span>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    container.innerHTML = '<div class="empty-state"><p>Failed to load cases</p></div>';
+  }
+}
+
+async function openCase(h_alpha) {
+  CURRENT_CASE = h_alpha;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('case-detail-panel').classList.add('active');
+  document.getElementById('detail-hash').textContent = h_alpha;
+
+  try {
+    const res = await fetch(`${API}/case/${h_alpha}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const d = await res.json();
+
+    // Stage
+    const stagePill = document.getElementById('detail-stage-pill');
+    stagePill.className = `stage-pill stage-${d.current_stage}`;
+    stagePill.textContent = `Stage ${d.current_stage}`;
+    document.getElementById('detail-stage-name').textContent = STAGE_NAMES[d.current_stage] || '';
+
+    // Velocity
+    if (d.recovery_velocity !== null) {
+      document.getElementById('velocity-section').style.display = 'block';
+      document.getElementById('detail-velocity').textContent = d.recovery_velocity;
+      document.getElementById('detail-velocity-desc').textContent = d.recovery_velocity > 0 ? 'points/day — improving' : 'points/day — declining';
+    }
+
+    // Assessments
+    const aContainer = document.getElementById('detail-assessments');
+    if (!d.assessments.length) {
+      aContainer.innerHTML = '<div class="empty-state"><p>No assessments yet</p></div>';
+    } else {
+      aContainer.innerHTML = `<div class="score-timeline">${d.assessments.map(a => `
+        <div class="score-entry">
+          <div class="score-date">${a.assessed_at.slice(0,10)}</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div>
+          <div class="score-num">${a.score}</div>
+        </div>`).join('')}</div>`;
+    }
+
+    // Sessions
+    const sContainer = document.getElementById('detail-sessions');
+    if (!d.sessions.length) {
+      sContainer.innerHTML = '<div class="empty-state"><p>No sessions logged yet</p></div>';
+    } else {
+      sContainer.innerHTML = d.sessions.map(s => `
+        <div class="session-entry">
+          <div class="session-dot"></div>
+          <div style="font-size:0.875rem">${s.held_at.slice(0,10)}</div>
+        </div>`).join('');
+    }
+  } catch(e) {}
+}
+
+function backToCases() {
+  CURRENT_CASE = null;
+  document.getElementById('case-detail-panel').classList.remove('active');
+  showPanel('cases', 'nav-cases');
+}
+
+function openAssessmentModal() {
+  document.getElementById('assessment-modal').style.display = 'flex';
+}
+
+function closeAssessmentModal() {
+  document.getElementById('assessment-modal').style.display = 'none';
+}
+
+async function submitModalAssessment() {
+  try {
+    const res = await fetch(`${API}/assessment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+      body: JSON.stringify({
+        h_alpha: CURRENT_CASE,
+        stage: parseInt(document.getElementById('modal-stage').value),
+        score: parseFloat(document.getElementById('modal-score').value),
+        assessed_by: USER.id
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    showAlert('modal-assessment-success', 'Assessment logged.');
+    setTimeout(() => { closeAssessmentModal(); openCase(CURRENT_CASE); }, 1000);
+  } catch(e) { showAlert('modal-assessment-error', e.message); }
+}
+
+async function advanceStageFromDetail() {
+  try {
+    const res = await fetch(`${API}/case/${CURRENT_CASE}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const d = await res.json();
+    const nextStage = d.current_stage + 1;
+    if (nextStage > 5) { alert('This case has already reached stage 5.'); return; }
+    if (!confirm(`Advance to Stage ${nextStage} — ${STAGE_NAMES[nextStage]}?`)) return;
+    const res2 = await fetch(`${API}/advance-stage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+      body: JSON.stringify({ h_alpha: CURRENT_CASE, to_stage: nextStage })
+    });
+    const d2 = await res2.json();
+    if (!res2.ok) throw new Error(d2.detail);
+    openCase(CURRENT_CASE);
+  } catch(e) { alert(e.message); }
+}
+
+async function logSessionFromDetail() {
+  try {
+    const res = await fetch(`${API}/session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+      body: JSON.stringify({ h_alpha: CURRENT_CASE, session_type: 'individual', psych_id: USER.id })
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    openCase(CURRENT_CASE);
+  } catch(e) { alert(e.message); }
 }
 
 async function submitIntake() {
@@ -878,38 +671,23 @@ async function submitIntake() {
   } catch(e) { showAlert('intake-error', e.message); }
 }
 
-async function submitAssessment() {
+async function loadTransactions() {
   try {
-    const res = await fetch(`${API}/assessment`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
-      body: JSON.stringify({
-        h_alpha: document.getElementById('assessment-hash').value,
-        stage: parseInt(document.getElementById('assessment-stage').value),
-        score: parseFloat(document.getElementById('assessment-score').value),
-        assessed_by: parseInt(document.getElementById('assessment-psych').value)
-      })
-    });
+    const res = await fetch(`${API}/transactions`);
     const d = await res.json();
-    if (!res.ok) throw new Error(d.detail);
-    showAlert('assessment-success', 'Assessment logged successfully.');
-  } catch(e) { showAlert('assessment-error', e.message); }
-}
-
-async function submitStage() {
-  try {
-    const res = await fetch(`${API}/advance-stage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
-      body: JSON.stringify({
-        h_alpha: document.getElementById('stage-hash').value,
-        to_stage: parseInt(document.getElementById('stage-to').value)
-      })
-    });
-    const d = await res.json();
-    if (!res.ok) throw new Error(d.detail);
-    showAlert('stage-success', `Advanced to stage ${d.to_stage} successfully.`);
-  } catch(e) { showAlert('stage-error', e.message); }
+    const tbody = document.getElementById('ledger-tbody');
+    if (!d.transactions.length) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No transactions yet</td></tr>';
+      return;
+    }
+    tbody.innerHTML = d.transactions.map(t => `
+      <tr>
+        <td>${t.reference}</td>
+        <td>${t.category}</td>
+        <td>${t.amount.toLocaleString()} ${t.currency}</td>
+        <td><span class="badge badge-${t.direction}">${t.direction === 'in' ? 'Income' : 'Expense'}</span></td>
+      </tr>`).join('');
+  } catch(e) {}
 }
 
 async function submitTransaction() {
@@ -933,14 +711,12 @@ async function submitTransaction() {
 }
 
 function logout() {
-  TOKEN = ''; USER = {};
+  TOKEN = ''; USER = {}; CURRENT_CASE = null;
   document.getElementById('auth-screen').style.display = '';
   document.getElementById('app-screen').style.display = 'none';
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !TOKEN) login();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !TOKEN) login(); });
 </script>
 </body>
 </html>
