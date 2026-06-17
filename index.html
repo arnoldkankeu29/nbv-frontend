@@ -303,6 +303,7 @@ tr:hover td { background: var(--bg); }
                 <span style="font-size:0.875rem;color:var(--muted)" id="detail-stage-name">—</span>
               </div>
               <button class="btn btn-primary" style="width:auto;margin-top:0" onclick="advanceStageFromDetail()">Advance to Next Stage →</button>
+      <button class="btn btn-danger btn-sm" style="margin-top:0.75rem" onclick="deleteCase()">Delete Case</button>
             </div>
           </div>
         </div>
@@ -327,7 +328,8 @@ tr:hover td { background: var(--bg); }
         <div class="alert alert-success" id="intake-success"></div>
         <div class="field"><label>Child Name</label><input type="text" id="intake-name" placeholder="Full name"></div>
         <div class="field"><label>Date of Birth</label><input type="date" id="intake-dob"></div>
-        <div class="field"><label>Assigned Psychologist ID</label><input type="number" id="intake-psych" value="1"></div>
+        <div class="field"><label>Case Code</label><input type="text" id="intake-code" placeholder="e.g. JD-2014 (initials + birth year)"></div>
+      <div class="field"><label>Assigned Psychologist ID</label><input type="number" id="intake-psych" value="1"></div>
         <button class="btn btn-primary" onclick="submitIntake()">Register Case →</button>
         <div class="result-box" id="intake-result">
           <strong>Case Hash (h_alpha) — save this immediately</strong>
@@ -523,7 +525,7 @@ async function loadMyCases() {
       <div class="case-row" onclick="openCase('${c.h_alpha}')">
         <div class="case-meta">
           <div class="case-info">
-            Stage ${c.current_stage} · ${c.session_count} session${c.session_count !== 1 ? 's' : ''}
+            <strong>${c.case_code || '—'}</strong> · Stage ${c.current_stage} · ${c.session_count} session${c.session_count !== 1 ? 's' : ''}
             ${c.last_score !== null ? `· Last score: ${c.last_score}` : ''}
             ${c.overdue ? '<span class="overdue-badge" style="margin-left:0.5rem">Overdue</span>' : ''}
           </div>
@@ -651,6 +653,18 @@ async function logSessionFromDetail() {
     openCase(CURRENT_CASE);
   } catch(e) { alert(e.message); }
 }
+async function deleteCase() {
+  if (!confirm('Delete this case? It will be hidden but preserved for admin review.')) return;
+  try {
+    const res = await fetch(`${API}/case/${CURRENT_CASE}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${TOKEN}` }
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    backToCases();
+  } catch(e) { alert(e.message); }
+}
 
 async function submitIntake() {
   try {
@@ -660,7 +674,8 @@ async function submitIntake() {
       body: JSON.stringify({
         child_name: document.getElementById('intake-name').value,
         birth_date: document.getElementById('intake-dob').value,
-        assigned_psych_id: parseInt(document.getElementById('intake-psych').value)
+        assigned_psych_id: parseInt(document.getElementById('intake-psych').value),
+        case_code: document.getElementById('intake-code').value
       })
     });
     const d = await res.json();
