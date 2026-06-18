@@ -756,7 +756,7 @@ async function openCase(h_alpha) {
     } else { document.getElementById('velocity-section').style.display='none'; }
     const aContainer=document.getElementById('detail-assessments');
     if(!d.assessments.length) { aContainer.innerHTML='<div class="empty-state"><p>No assessments yet</p></div>'; }
-    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">Stage ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div></div>`).join('')}</div>`; }
+    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">Stage ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div><button class="btn btn-danger btn-sm" onclick="deleteAssessment(${a.id})">✕</button></div>`).join('')}</div>`; }
     const sContainer=document.getElementById('detail-sessions');
     if(!d.sessions.length) { sContainer.innerHTML='<div class="empty-state"><p>No sessions yet</p></div>'; }
     else { sContainer.innerHTML=d.sessions.map(s=>`<div class="session-entry"><div class="session-left"><div class="session-dot past"></div><div class="session-info"><div class="session-date">${s.held_at.slice(0,16).replace('T',' ')}</div></div></div></div>`).join(''); }
@@ -778,6 +778,15 @@ async function submitModalAssessment() {
     showAlert('modal-assessment-success','Assessment logged.');
     setTimeout(()=>{ closeModal('assessment-modal'); openCase(CURRENT_CASE); },800);
   } catch(e) { showAlert('modal-assessment-error',e.message); }
+}
+
+async function deleteAssessment(id) {
+  if(!confirm('Delete this assessment?')) return;
+  try {
+    const res=await fetch(`${API}/assessment/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
+    if(!res.ok) throw new Error('Failed');
+    openCase(CURRENT_CASE);
+  } catch(e) { alert(e.message); }
 }
 
 function openSessionFromDetail() {
