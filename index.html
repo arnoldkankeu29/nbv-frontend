@@ -397,7 +397,7 @@ tr:hover td { background: var(--bg); }
         <div class="field"><label>Child Name <span style="font-weight:400;color:var(--muted)">(never stored)</span></label><input type="text" id="intake-name" placeholder="Full name"></div>
         <div class="field"><label>Date of Birth</label><input type="date" id="intake-dob"></div>
         <div class="field"><label>Assigned Psychologist ID</label><input type="number" id="intake-psych" id="intake-psych"></div>
-        <button class="btn btn-primary btn-full" onclick="submitIntake()">Register Case →</button>
+        <button class="btn btn-primary btn-full" onclick="submitIntake(this)">Register Case →</button>
         <div class="result-box" id="intake-result">
           <strong>Case Hash (h_alpha) — copy and save this immediately</strong>
           <span id="intake-hash"></span>
@@ -432,7 +432,7 @@ tr:hover td { background: var(--bg); }
         <div class="field"><label>Session Type</label><select id="sched-type"><option value="individual">Individual</option><option value="group">Group</option><option value="family">Family</option><option value="assessment">Assessment</option></select></div>
         <div class="field"><label>Date & Time</label><input type="datetime-local" id="sched-date"></div>
         <div class="field"><label>Notes <span style="font-weight:400;color:var(--muted)">(optional)</span></label><textarea id="sched-notes" placeholder="Session notes..."></textarea></div>
-        <button class="btn btn-primary btn-full" onclick="submitSchedule()">Save Session →</button>
+        <button class="btn btn-primary btn-full" onclick="submitSchedule(this)">Save Session →</button>
       </div>
     </div>
 
@@ -449,7 +449,7 @@ tr:hover td { background: var(--bg); }
           <div class="field"><label>Direction</label><select id="ledger-direction"><option value="in">Income</option><option value="out">Expense</option></select></div>
           <div class="field"><label>Category</label><input type="text" id="ledger-category" placeholder="e.g. donation, supplies"></div>
           <div class="field"><label>Reference</label><input type="text" id="ledger-reference" placeholder="e.g. DON-2026-002"></div>
-          <button class="btn btn-primary btn-full" onclick="submitTransaction()">Record →</button>
+          <button class="btn btn-primary btn-full" onclick="submitTransaction(this)">Record →</button>
         </div>
         <div class="card" style="height:fit-content">
           <div class="card-header"><h3>Transaction History</h3></div>
@@ -473,7 +473,7 @@ tr:hover td { background: var(--bg); }
     <div class="field"><label>Date</label><input type="date" id="modal-date"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('assessment-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitModalAssessment()">Submit</button>
+      <button class="btn btn-primary" onclick="submitModalAssessment(this)">Submit</button>
     </div>
   </div>
 </div>
@@ -489,7 +489,7 @@ tr:hover td { background: var(--bg); }
     <div class="field"><label>Notes</label><textarea id="modal-session-notes" placeholder="Session notes..."></textarea></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('session-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitModalSession()">Save</button>
+      <button class="btn btn-primary" onclick="submitModalSession(this)">Save</button>
     </div>
   </div>
 </div>
@@ -628,7 +628,7 @@ async function loadDashboard() {
       const o=await overdueRes.json();
       const cont=document.getElementById('dash-overdue');
       if(!o.overdue.length) { cont.innerHTML='<div class="empty-state"><div class="empty-icon">✓</div><p>All cases up to date</p></div>'; }
-      else { cont.innerHTML=o.overdue.map(c=>`<div class="case-row" onclick="openCase('${c.h_alpha}')"><div class="case-meta"><div class="case-info">Stage ${c.current_stage} <span class="overdue-badge">Overdue</span></div><div class="case-hash">${c.h_alpha}</div></div></div>`).join(''); }
+      else { cont.innerHTML=o.overdue.map(c=>`<div class="case-row" onclick="openCase('${c.h_alpha}')"><div class="case-meta"><div class="case-info"><strong>${c.case_code||c.h_alpha.slice(0,10)+'...'}</strong> · Stage ${c.current_stage} <span class="overdue-badge">Overdue</span></div></div></div>`).join(''); }
     }
   } catch(e) { console.error(e); }
 }
@@ -771,8 +771,7 @@ function openAssessmentModal() {
   openModal('assessment-modal');
 }
 
-async function submitModalAssessment() {
-  const btn=event.target;
+async function submitModalAssessment(btn) {
   btn.disabled=true; const original=btn.textContent; btn.textContent='Submitting...';
   try {
     const res=await fetch(`${API}/assessment`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,stage:parseInt(document.getElementById('modal-stage').value),score:parseFloat(document.getElementById('modal-score').value),assessed_by:USER.id})});
@@ -798,8 +797,7 @@ function openSessionFromDetail() {
   openModal('session-modal');
 }
 
-async function submitModalSession() {
-  const btn=event.target;
+async function submitModalSession(btn) {
   btn.disabled=true; const original=btn.textContent; btn.textContent='Saving...';
   try {
     const dateVal=document.getElementById('modal-session-date').value;
@@ -873,8 +871,7 @@ function resolveCase() {
   },400);
 }
 
-async function submitSchedule() {
-  const btn=event.target;
+async function submitSchedule(btn) {
   btn.disabled=true; const original=btn.textContent; btn.textContent='Saving...';
   try {
     const raw=document.getElementById('sched-hash').value.trim();
@@ -890,10 +887,8 @@ async function submitSchedule() {
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
-async function submitIntake() {
-  const btn=event.target;
-  const original=btn.textContent;
-  btn.disabled=true; btn.textContent='Registering...';
+async function submitIntake(btn) {
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Registering...';
   try {
     const res=await fetch(`${API}/intake`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({child_name:document.getElementById('intake-name').value,birth_date:document.getElementById('intake-dob').value,assigned_psych_id:parseInt(document.getElementById('intake-psych').value),case_code:document.getElementById('intake-code').value})});
     const d=await res.json();
@@ -915,8 +910,7 @@ async function loadTransactions() {
   } catch(e) {}
 }
 
-async function submitTransaction() {
-  const btn=event.target;
+async function submitTransaction(btn) {
   btn.disabled=true; const original=btn.textContent; btn.textContent='Recording...';
   try {
     const res=await fetch(`${API}/transaction`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:parseFloat(document.getElementById('ledger-amount').value),direction:document.getElementById('ledger-direction').value,category:document.getElementById('ledger-category').value,reference:document.getElementById('ledger-reference').value,recorded_by:1})});
