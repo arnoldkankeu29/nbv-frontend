@@ -756,7 +756,7 @@ async function openCase(h_alpha) {
     } else { document.getElementById('velocity-section').style.display='none'; }
     const aContainer=document.getElementById('detail-assessments');
     if(!d.assessments.length) { aContainer.innerHTML='<div class="empty-state"><p>No assessments yet</p></div>'; }
-    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}</div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div></div>`).join('')}</div>`; }
+    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">Stage ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div></div>`).join('')}</div>`; }
     const sContainer=document.getElementById('detail-sessions');
     if(!d.sessions.length) { sContainer.innerHTML='<div class="empty-state"><p>No sessions yet</p></div>'; }
     else { sContainer.innerHTML=d.sessions.map(s=>`<div class="session-entry"><div class="session-left"><div class="session-dot past"></div><div class="session-info"><div class="session-date">${s.held_at.slice(0,16).replace('T',' ')}</div></div></div></div>`).join(''); }
@@ -788,7 +788,9 @@ function openSessionFromDetail() {
 
 async function submitModalSession() {
   try {
-    const res=await fetch(`${API}/log-session`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,psych_id:USER.id,held_at:document.getElementById('modal-session-date').value,session_type:document.getElementById('modal-session-type').value,notes:document.getElementById('modal-session-notes').value})});
+    const dateVal=document.getElementById('modal-session-date').value;
+    const isFuture=new Date(dateVal) > new Date();
+    const res=await fetch(`${API}/log-session`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,psych_id:USER.id,held_at:dateVal,scheduled_at:isFuture?dateVal:null,session_type:document.getElementById('modal-session-type').value,notes:document.getElementById('modal-session-notes').value})});
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
     showAlert('modal-session-success','Session logged.');
@@ -815,6 +817,8 @@ async function flagRisk() {
   try {
     await fetch(`${API}/flag-risk/${CURRENT_CASE}`,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`}});
     document.getElementById('detail-risk-badge').style.display='';
+    const found=ALL_CASES.find(c=>c.h_alpha===CURRENT_CASE);
+    if(found) found.is_at_risk=true;
   } catch(e) {}
 }
 
