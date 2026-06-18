@@ -158,6 +158,7 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 /* BUTTONS */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.7rem 1.4rem; border-radius: 8px; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 150ms; }
 .btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-primary { background: var(--primary); color: white; }
 .btn-primary:hover { background: var(--primary-hover); }
 .btn-full { width: 100%; margin-top: 0.5rem; }
@@ -771,13 +772,15 @@ function openAssessmentModal() {
 }
 
 async function submitModalAssessment() {
+  const btn=event.target;
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Submitting...';
   try {
     const res=await fetch(`${API}/assessment`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,stage:parseInt(document.getElementById('modal-stage').value),score:parseFloat(document.getElementById('modal-score').value),assessed_by:USER.id})});
-    const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
     showAlert('modal-assessment-success','Assessment logged.');
     setTimeout(()=>{ closeModal('assessment-modal'); openCase(CURRENT_CASE); },800);
-  } catch(e) { showAlert('modal-assessment-error',e.message); }
+ } catch(e) { showAlert('modal-assessment-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
 async function deleteAssessment(id) {
@@ -796,6 +799,8 @@ function openSessionFromDetail() {
 }
 
 async function submitModalSession() {
+  const btn=event.target;
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Saving...';
   try {
     const dateVal=document.getElementById('modal-session-date').value;
     const isFuture=new Date(dateVal) > new Date();
@@ -805,6 +810,7 @@ async function submitModalSession() {
     showAlert('modal-session-success','Session logged.');
     setTimeout(()=>{ closeModal('session-modal'); openCase(CURRENT_CASE); },800);
   } catch(e) { showAlert('modal-session-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
 async function advanceStageFromDetail() {
@@ -868,6 +874,8 @@ function resolveCase() {
 }
 
 async function submitSchedule() {
+  const btn=event.target;
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Saving...';
   try {
     const raw=document.getElementById('sched-hash').value.trim();
     const h_alpha=document.getElementById('sched-hash').dataset.resolved||raw;
@@ -879,17 +887,22 @@ async function submitSchedule() {
     document.getElementById('sched-notes').value='';
     document.getElementById('sched-case-preview').style.display='none';
   } catch(e) { showAlert('schedule-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
 async function submitIntake() {
+  const btn=event.target;
+  const original=btn.textContent;
+  btn.disabled=true; btn.textContent='Registering...';
   try {
     const res=await fetch(`${API}/intake`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({child_name:document.getElementById('intake-name').value,birth_date:document.getElementById('intake-dob').value,assigned_psych_id:parseInt(document.getElementById('intake-psych').value),case_code:document.getElementById('intake-code').value})});
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
     document.getElementById('intake-hash').textContent=d.h_alpha;
     document.getElementById('intake-result').classList.add('show');
-    showAlert('intake-success','Case registered. Save the hash above.');
+    showAlert('intake-success','Case registered. Save the hash below.');
   } catch(e) { showAlert('intake-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
 async function loadTransactions() {
@@ -903,6 +916,8 @@ async function loadTransactions() {
 }
 
 async function submitTransaction() {
+  const btn=event.target;
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Recording...';
   try {
     const res=await fetch(`${API}/transaction`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:parseFloat(document.getElementById('ledger-amount').value),direction:document.getElementById('ledger-direction').value,category:document.getElementById('ledger-category').value,reference:document.getElementById('ledger-reference').value,recorded_by:1})});
     const d=await res.json();
@@ -910,6 +925,7 @@ async function submitTransaction() {
     showAlert('ledger-success','Transaction recorded.');
     loadTransactions();
   } catch(e) { showAlert('ledger-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
 function logout() { TOKEN=''; USER={}; CURRENT_CASE=null; ALL_CASES=[]; ALL_SESSIONS=[]; document.getElementById('auth-screen').style.display=''; document.getElementById('app-screen').style.display='none'; }
