@@ -352,8 +352,8 @@ tr:hover td { background: var(--bg); }
 
       <div id="velocity-section" style="display:none">
         <div class="velocity-card">
-          <div><div class="velocity-label">Recovery Velocity</div><div class="velocity-value" id="detail-velocity">—</div></div>
-          <div><div class="velocity-label">Trend</div><div class="velocity-desc" id="detail-velocity-desc">—</div></div>
+          <div><div class="velocity-label">Score Trend</div><div class="velocity-value" id="detail-velocity">—</div></div>
+          <div><div class="velocity-label">Recent Change</div><div class="velocity-desc" id="detail-velocity-desc">—</div></div>
           <div><div class="velocity-label">Intake Date</div><div class="velocity-desc" id="detail-intake">—</div></div>
         </div>
       </div>
@@ -751,8 +751,8 @@ async function openCase(h_alpha) {
     else document.getElementById('detail-risk-badge').style.display='none';
     if(d.recovery_velocity!==null) {
       document.getElementById('velocity-section').style.display='block';
-      document.getElementById('detail-velocity').textContent=d.recovery_velocity;
-      document.getElementById('detail-velocity-desc').textContent=d.recovery_velocity>0?'Improving ↑':'Declining ↓';
+      document.getElementById('detail-velocity').textContent=(d.recovery_velocity>0?'+':'')+d.recovery_velocity;
+      document.getElementById('detail-velocity-desc').textContent=`Change between last two assessments (${d.recovery_velocity} pts/day) — clinical judgment required`;
     } else { document.getElementById('velocity-section').style.display='none'; }
     const aContainer=document.getElementById('detail-assessments');
     if(!d.assessments.length) { aContainer.innerHTML='<div class="empty-state"><p>No assessments yet</p></div>'; }
