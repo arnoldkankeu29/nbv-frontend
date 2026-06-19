@@ -276,6 +276,7 @@ tr:hover td { background: var(--bg); }
           <div class="stat-card"><div class="stat-label">My Cases</div><div class="stat-value primary" id="ps-total">—</div><div class="stat-sub">assigned</div></div>
           <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value success" id="ps-completed">—</div><div class="stat-sub">stage 5</div></div>
           <div class="stat-card"><div class="stat-label">Sessions This Week</div><div class="stat-value accent" id="ps-week">—</div><div class="stat-sub">delivered</div></div>
+          <div class="stat-card"><div class="stat-label">Scheduled This Week</div><div class="stat-value" id="ps-scheduled-week">—</div><div class="stat-sub">planned</div></div>
           <div class="stat-card"><div class="stat-label">Upcoming</div><div class="stat-value" id="ps-upcoming">—</div><div class="stat-sub">scheduled</div></div>
           <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" id="ps-avg">—</div><div class="stat-sub">across cases</div></div>
           <div class="stat-card"><div class="stat-label">At Risk</div><div class="stat-value danger" id="ps-risk">—</div><div class="stat-sub">need attention</div></div>
@@ -615,6 +616,7 @@ async function loadDashboard() {
       document.getElementById('ps-total').textContent=s.total_cases;
       document.getElementById('ps-completed').textContent=s.completed_cases;
       document.getElementById('ps-week').textContent=s.sessions_this_week;
+      document.getElementById('ps-scheduled-week').textContent=s.scheduled_this_week;
       document.getElementById('ps-upcoming').textContent=s.upcoming_sessions;
       document.getElementById('ps-avg').textContent=s.avg_score;
       document.getElementById('ps-risk').textContent=s.at_risk_cases;
