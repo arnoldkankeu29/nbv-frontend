@@ -812,7 +812,10 @@ async function submitModalSession(btn) {
     if(!res.ok) throw new Error(d.detail);
     showAlert('modal-session-success','Session logged.');
     loadDashboard();
+    setTishowAlert('modal-session-success','Session logged.');
+    loadDashboard();
     setTimeout(()=>{ closeModal('session-modal'); openCase(CURRENT_CASE); },800);
+  } catch(e) { showAlert('modal-session-error',e.message); }
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
