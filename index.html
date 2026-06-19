@@ -345,7 +345,7 @@ tr:hover td { background: var(--bg); }
           <div class="detail-hash" id="detail-hash">—</div>
         </div>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-          <button class="btn btn-warning btn-sm" onclick="flagRisk()">⚠ Flag Risk</button>
+          <button class="btn btn-warning btn-sm" id="risk-toggle-btn" onclick="toggleRisk()">⚠ Flag Risk</button>
           <button class="btn btn-ghost btn-sm" onclick="openTransferModal()">Transfer</button>
           <button class="btn btn-danger btn-sm" onclick="deleteCase()">Delete</button>
         </div>
@@ -748,8 +748,13 @@ async function openCase(h_alpha) {
     pill2.className=`stage-pill stage-${d.current_stage}`; pill2.textContent=`Stage ${d.current_stage}`;
     document.getElementById('detail-stage-name').textContent=STAGE_NAMES[d.current_stage]||'';
     document.getElementById('detail-intake').textContent=d.intake_date;
-    if(found?.is_at_risk) document.getElementById('detail-risk-badge').style.display='';
-    else document.getElementById('detail-risk-badge').style.display='none';
+    if(found?.is_at_risk) {
+      document.getElementById('detail-risk-badge').style.display='';
+      document.getElementById('risk-toggle-btn').textContent='✓ Unflag Risk';
+    } else {
+      document.getElementById('detail-risk-badge').style.display='none';
+      document.getElementById('risk-toggle-btn').textContent='⚠ Flag Risk';
+    }
     if(d.recovery_velocity!==null) {
       document.getElementById('velocity-section').style.display='block';
       document.getElementById('detail-velocity').textContent=(d.recovery_velocity>0?'+':'')+d.recovery_velocity;
@@ -806,8 +811,8 @@ async function submitModalSession(btn) {
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
     showAlert('modal-session-success','Session logged.');
+    loadDashboard();
     setTimeout(()=>{ closeModal('session-modal'); openCase(CURRENT_CASE); },800);
-  } catch(e) { showAlert('modal-session-error',e.message); }
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
@@ -825,13 +830,16 @@ async function advanceStageFromDetail() {
   } catch(e) { alert(e.message); }
 }
 
-async function flagRisk() {
-  if(!confirm('Flag this case as at-risk?')) return;
+async function toggleRisk() {
+  const found=ALL_CASES.find(c=>c.h_alpha===CURRENT_CASE);
+  const isRisk=found?.is_at_risk;
+  const endpoint=isRisk?'unflag-risk':'flag-risk';
+  if(!confirm(isRisk?'Remove at-risk flag from this case?':'Flag this case as at-risk?')) return;
   try {
-    await fetch(`${API}/flag-risk/${CURRENT_CASE}`,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`}});
-    document.getElementById('detail-risk-badge').style.display='';
-    const found=ALL_CASES.find(c=>c.h_alpha===CURRENT_CASE);
-    if(found) found.is_at_risk=true;
+    await fetch(`${API}/${endpoint}/${CURRENT_CASE}`,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`}});
+    document.getElementById('detail-risk-badge').style.display=isRisk?'none':'';
+    document.getElementById('risk-toggle-btn').textContent=isRisk?'⚠ Flag Risk':'✓ Unflag Risk';
+    if(found) found.is_at_risk=!isRisk;
   } catch(e) {}
 }
 
@@ -883,6 +891,7 @@ async function submitSchedule(btn) {
     document.getElementById('sched-hash').value='';
     document.getElementById('sched-notes').value='';
     document.getElementById('sched-case-preview').style.display='none';
+    loadDashboard();
   } catch(e) { showAlert('schedule-error',e.message); }
   finally { btn.disabled=false; btn.textContent=original; }
 }
