@@ -841,8 +841,7 @@ async function advanceStageFromDetail(btn) {
   finally { if(btn) btn.disabled=false; }
 }
 
-async function toggleRisk() {
-  async function toggleRisk(btn) {
+async function toggleRisk(btn) {
   if(btn){ btn.disabled=true; }
   const found=ALL_CASES.find(c=>c.h_alpha===CURRENT_CASE);
   const isRisk=found?.is_at_risk;
