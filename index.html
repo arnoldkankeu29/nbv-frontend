@@ -227,7 +227,7 @@ tr:hover td { background: var(--bg); }
     <div class="alert alert-error" id="login-error"></div>
     <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@nbv.org"></div>
     <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
-    <button class="btn btn-primary btn-full" onclick="login()">Sign in →</button>
+    <button class="btn btn-primary btn-full" onclick="login(this)">Sign in →</button>
   </div>
 </div>
 
@@ -345,9 +345,9 @@ tr:hover td { background: var(--bg); }
           <div class="detail-hash" id="detail-hash">—</div>
         </div>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-          <button class="btn btn-warning btn-sm" id="risk-toggle-btn" onclick="toggleRisk()">⚠ Flag Risk</button>
+          <button class="btn btn-warning btn-sm" id="risk-toggle-btn" onclick="toggleRisk(this)">⚠ Flag Risk</button>
           <button class="btn btn-ghost btn-sm" onclick="openTransferModal()">Transfer</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteCase()">Delete</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCase(this)">Delete</button>
         </div>
       </div>
 
@@ -373,7 +373,7 @@ tr:hover td { background: var(--bg); }
                 <span style="font-size:0.875rem;color:var(--muted)" id="detail-stage-name">—</span>
               </div>
               <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
-                <button class="btn btn-primary btn-sm" onclick="advanceStageFromDetail()">Advance Stage →</button>
+                <button class="btn btn-primary btn-sm" onclick="advanceStageFromDetail(this)">Advance Stage →</button>
               </div>
             </div>
           </div>
@@ -502,7 +502,7 @@ tr:hover td { background: var(--bg); }
     <div class="field"><label>Transfer to Psychologist ID</label><input type="number" id="modal-transfer-id" placeholder="Psychologist ID"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('transfer-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitTransfer()">Transfer</button>
+      <button class="btn btn-primary" onclick="submitTransfer(this)">Transfer</button>
     </div>
   </div>
 </div>
@@ -519,7 +519,9 @@ function openModal(id) { document.getElementById(id).classList.add('open'); }
 
 function greeting() { const h=new Date().getHours(); return h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
 
-async function login() {
+async function login(btn) {
+  btn = btn || document.querySelector('.auth-card .btn-primary');
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Signing in...';
   const email=document.getElementById('login-email').value, pass=document.getElementById('login-password').value;
   try {
     const res=await fetch(`${API}/token`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`username=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`});
@@ -529,6 +531,7 @@ async function login() {
     USER=JSON.parse(atob(TOKEN.split('.')[1]));
     initApp();
   } catch(e) { showAlert('login-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
 function initApp() {
@@ -724,12 +727,14 @@ function setSessionFilter(f,btn) {
 
 async function deleteSession(id,e) {
   e.stopPropagation();
+  const btn=e.target;
   if(!confirm('Delete this session?')) return;
+  btn.disabled=true;
   try {
     const res=await fetch(`${API}/session/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
     if(!res.ok) throw new Error('Failed');
     loadAllSessions();
-  } catch(e) { alert(e.message); }
+  } catch(e) { alert(e.message); btn.disabled=false; }
 }
 
 async function openCase(h_alpha) {
@@ -762,7 +767,7 @@ async function openCase(h_alpha) {
     } else { document.getElementById('velocity-section').style.display='none'; }
     const aContainer=document.getElementById('detail-assessments');
     if(!d.assessments.length) { aContainer.innerHTML='<div class="empty-state"><p>No assessments yet</p></div>'; }
-    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">Stage ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div><button class="btn btn-danger btn-sm" onclick="deleteAssessment(${a.id})">✕</button></div>`).join('')}</div>`; }
+    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">Stage ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div><button class="btn btn-danger btn-sm" onclick="deleteAssessment(${a.id},this)">✕</button></div>`).join('')}</div>`; }
     const sContainer=document.getElementById('detail-sessions');
     if(!d.sessions.length) { sContainer.innerHTML='<div class="empty-state"><p>No sessions yet</p></div>'; }
     else { sContainer.innerHTML=d.sessions.map(s=>`<div class="session-entry"><div class="session-left"><div class="session-dot past"></div><div class="session-info"><div class="session-date">${s.held_at.slice(0,16).replace('T',' ')}</div></div></div></div>`).join(''); }
@@ -787,13 +792,14 @@ async function submitModalAssessment(btn) {
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
-async function deleteAssessment(id) {
+async function deleteAssessment(id,btn) {
   if(!confirm('Delete this assessment?')) return;
+  if(btn) btn.disabled=true;
   try {
     const res=await fetch(`${API}/assessment/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
     if(!res.ok) throw new Error('Failed');
     openCase(CURRENT_CASE);
-  } catch(e) { alert(e.message); }
+  } catch(e) { alert(e.message); if(btn) btn.disabled=false; }
 }
 
 function openSessionFromDetail() {
@@ -819,7 +825,8 @@ async function submitModalSession(btn) {
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
-async function advanceStageFromDetail() {
+async function advanceStageFromDetail(btn) {
+  if(btn) btn.disabled=true;
   try {
     const res=await fetch(`${API}/case/${CURRENT_CASE}`,{headers:{Authorization:`Bearer ${TOKEN}`}});
     const d=await res.json();
@@ -831,9 +838,12 @@ async function advanceStageFromDetail() {
     if(!res2.ok) throw new Error(d2.detail);
     openCase(CURRENT_CASE);
   } catch(e) { alert(e.message); }
+  finally { if(btn) btn.disabled=false; }
 }
 
 async function toggleRisk() {
+  async function toggleRisk(btn) {
+  if(btn){ btn.disabled=true; }
   const found=ALL_CASES.find(c=>c.h_alpha===CURRENT_CASE);
   const isRisk=found?.is_at_risk;
   const endpoint=isRisk?'unflag-risk':'flag-risk';
@@ -844,11 +854,13 @@ async function toggleRisk() {
     document.getElementById('risk-toggle-btn').textContent=isRisk?'⚠ Flag Risk':'✓ Unflag Risk';
     if(found) found.is_at_risk=!isRisk;
   } catch(e) {}
+  finally { if(btn) btn.disabled=false; }
 }
 
 function openTransferModal() { openModal('transfer-modal'); }
 
-async function submitTransfer() {
+async function submitTransfer(btn) {
+  btn.disabled=true; const original=btn.textContent; btn.textContent='Transferring...';
   try {
     const res=await fetch(`${API}/transfer-case`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,to_psych_id:parseInt(document.getElementById('modal-transfer-id').value)})});
     const d=await res.json();
@@ -856,15 +868,17 @@ async function submitTransfer() {
     closeModal('transfer-modal');
     backToCases();
   } catch(e) { showAlert('modal-transfer-error',e.message); }
+  finally { btn.disabled=false; btn.textContent=original; }
 }
 
-async function deleteCase() {
+async function deleteCase(btn) {
   if(!confirm('Delete this case? It will be hidden but preserved for admin review.')) return;
+  if(btn) btn.disabled=true;
   try {
     const res=await fetch(`${API}/case/${CURRENT_CASE}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
     if(!res.ok) throw new Error('Failed');
     backToCases();
-  } catch(e) { alert(e.message); }
+  } catch(e) { alert(e.message); if(btn) btn.disabled=false; }
 }
 
 let schedResolveTimer=null;
