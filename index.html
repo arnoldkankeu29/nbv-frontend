@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,10 +26,16 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 
 /* AUTH */
 #auth-screen { min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
-.auth-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--shadow); }
+.auth-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--shadow); position: relative; }
+.auth-lang-toggle { position: absolute; top: 1.25rem; right: 1.25rem; }
 .auth-logo { width: 40px; height: 40px; background: var(--primary); border-radius: 10px; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
 .auth-card h1 { font-family: 'Fraunces', serif; font-size: 1.8rem; margin-bottom: 0.25rem; }
 .auth-card p { color: var(--muted); font-size: 0.875rem; margin-bottom: 2rem; }
+
+/* LANG TOGGLE */
+.lang-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; font-size: 0.72rem; }
+.lang-btn { padding: 0.3rem 0.65rem; background: var(--surface); color: var(--muted); border: none; cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-weight: 500; }
+.lang-btn.active { background: var(--primary); color: white; }
 
 /* LAYOUT */
 #app-screen { display: none; min-height: 100vh; }
@@ -48,6 +54,7 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .user-name { font-size: 0.82rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-role { font-size: 0.7rem; color: var(--muted); }
 .psych-id-chip { font-size: 0.7rem; color: var(--muted); padding: 0.25rem 0.75rem; margin-bottom: 0.5rem; }
+.sidebar-lang-row { padding: 0.25rem 0.75rem 0.6rem; }
 .main { margin-left: 220px; padding: 2rem; min-height: 100vh; }
 .page-header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
 .page-header h2 { font-family: 'Fraunces', serif; font-size: 1.75rem; margin-bottom: 0.25rem; }
@@ -207,7 +214,7 @@ tr:hover td { background: var(--bg); }
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 1rem; }
-  .mobile-nav { display: flex; overflow-x: auto; gap: 0.5rem; padding: 0.75rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; -webkit-overflow-scrolling: touch; }
+  .mobile-nav { display: flex; overflow-x: auto; gap: 0.5rem; padding: 0.75rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; -webkit-overflow-scrolling: touch; align-items: center; }
   .mobile-nav-btn { padding: 0.45rem 1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
   .mobile-nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   .two-col, .three-col { grid-template-columns: 1fr; }
@@ -221,42 +228,54 @@ tr:hover td { background: var(--bg); }
 <!-- LOGIN -->
 <div id="auth-screen">
   <div class="auth-card">
+    <div class="auth-lang-toggle">
+      <div class="lang-toggle">
+        <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
     <div class="auth-logo">🏥</div>
     <h1>NBV Foundation</h1>
-    <p>Child Recovery Platform — Staff Access Only</p>
+    <p data-i18n="login_subtitle">Plateforme de récupération des enfants — Accès personnel uniquement</p>
     <div class="alert alert-error" id="login-error"></div>
-    <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@nbv.org"></div>
-    <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
-    <button class="btn btn-primary btn-full" onclick="login(this)">Sign in →</button>
+    <div class="field"><label data-i18n="email">Email</label><input type="email" id="login-email" placeholder="you@nbv.org"></div>
+    <div class="field"><label data-i18n="password">Mot de passe</label><input type="password" id="login-password" placeholder="••••••••"></div>
+    <button class="btn btn-primary btn-full" onclick="login(this)" data-i18n="sign_in">Se connecter →</button>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app-screen">
   <div class="sidebar">
-    <div class="sidebar-brand">NBV Foundation<span>Child Recovery Platform</span></div>
+    <div class="sidebar-brand">NBV Foundation<span data-i18n="brand_sub">Plateforme de récupération des enfants</span></div>
 
-    <div class="nav-section">Overview</div>
-    <div id="nav-dashboard" class="nav-item active" onclick="showPanel('dashboard','nav-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+    <div class="nav-section" data-i18n="nav_overview">Aperçu</div>
+    <div id="nav-dashboard" class="nav-item active" onclick="showPanel('dashboard','nav-dashboard')"><span class="nav-icon">◈</span> <span data-i18n="nav_dashboard">Tableau de bord</span></div>
 
-    <div class="nav-section psych-only">Patients</div>
-    <div id="nav-cases" class="nav-item psych-only" onclick="showPanel('cases','nav-cases')"><span class="nav-icon">👥</span> My Cases</div>
-    <div id="nav-intake" class="nav-item psych-only" onclick="showPanel('intake','nav-intake')"><span class="nav-icon">＋</span> New Case</div>
+    <div class="nav-section psych-only" data-i18n="nav_patients">Patients</div>
+    <div id="nav-cases" class="nav-item psych-only" onclick="showPanel('cases','nav-cases')"><span class="nav-icon">👥</span> <span data-i18n="nav_cases">Mes Dossiers</span></div>
+    <div id="nav-intake" class="nav-item psych-only" onclick="showPanel('intake','nav-intake')"><span class="nav-icon">＋</span> <span data-i18n="nav_intake">Nouveau Dossier</span></div>
 
-    <div class="nav-section psych-only">Sessions</div>
-    <div id="nav-sessions" class="nav-item psych-only" onclick="showPanel('sessions','nav-sessions')"><span class="nav-icon">📅</span> All Sessions</div>
-    <div id="nav-schedule" class="nav-item psych-only" onclick="showPanel('schedule','nav-schedule')"><span class="nav-icon">＋</span> Schedule Session</div>
+    <div class="nav-section psych-only" data-i18n="nav_sessions_section">Séances</div>
+    <div id="nav-sessions" class="nav-item psych-only" onclick="showPanel('sessions','nav-sessions')"><span class="nav-icon">📅</span> <span data-i18n="nav_sessions">Toutes les Séances</span></div>
+    <div id="nav-schedule" class="nav-item psych-only" onclick="showPanel('schedule','nav-schedule')"><span class="nav-icon">＋</span> <span data-i18n="nav_schedule">Planifier une Séance</span></div>
 
-    <div class="nav-section ledger-only">Finance</div>
-    <div id="nav-ledger" class="nav-item ledger-only" onclick="showPanel('ledger','nav-ledger')"><span class="nav-icon">₣</span> Ledger</div>
+    <div class="nav-section ledger-only" data-i18n="nav_finance">Finances</div>
+    <div id="nav-ledger" class="nav-item ledger-only" onclick="showPanel('ledger','nav-ledger')"><span class="nav-icon">₣</span> <span data-i18n="nav_ledger">Registre</span></div>
 
     <div class="sidebar-bottom">
       <div class="user-chip">
         <div class="user-avatar" id="user-avatar">—</div>
         <div class="user-info"><div class="user-name" id="user-name">—</div><div class="user-role" id="user-role">—</div></div>
       </div>
-      <div class="psych-id-chip">Your ID: <strong id="user-id-display">—</strong></div>
-      <button class="btn btn-ghost btn-sm" style="width:100%" onclick="logout()">Sign out</button>
+      <div class="psych-id-chip"><span data-i18n="your_id">Votre ID</span> : <strong id="user-id-display">—</strong></div>
+      <div class="sidebar-lang-row">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+          <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:100%" onclick="logout()" data-i18n="sign_out">Se déconnecter</button>
     </div>
   </div>
 
@@ -267,47 +286,47 @@ tr:hover td { background: var(--bg); }
     <!-- DASHBOARD -->
     <div class="panel active" id="panel-dashboard">
       <div class="page-header">
-        <div><h2 id="dash-greeting">Good morning</h2><p id="dash-date"></p></div>
+        <div><h2 id="dash-greeting">Bonjour</h2><p id="dash-date"></p></div>
       </div>
 
       <!-- Personal stats (psych only) -->
       <div id="psych-stats-section">
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">My Cases</div><div class="stat-value primary" id="ps-total">—</div><div class="stat-sub">assigned</div></div>
-          <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value success" id="ps-completed">—</div><div class="stat-sub">stage 5</div></div>
-          <div class="stat-card"><div class="stat-label">Sessions This Week</div><div class="stat-value accent" id="ps-week">—</div><div class="stat-sub">delivered</div></div>
-          <div class="stat-card"><div class="stat-label">Scheduled This Week</div><div class="stat-value" id="ps-scheduled-week">—</div><div class="stat-sub">planned</div></div>
-          <div class="stat-card"><div class="stat-label">Upcoming</div><div class="stat-value" id="ps-upcoming">—</div><div class="stat-sub">scheduled</div></div>
-          <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" id="ps-avg">—</div><div class="stat-sub">across cases</div></div>
-          <div class="stat-card"><div class="stat-label">At Risk</div><div class="stat-value danger" id="ps-risk">—</div><div class="stat-sub">need attention</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_my_cases">Mes Dossiers</div><div class="stat-value primary" id="ps-total">—</div><div class="stat-sub" data-i18n="stat_assigned">assignés</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_completed">Terminés</div><div class="stat-value success" id="ps-completed">—</div><div class="stat-sub" data-i18n="stat_stage5">étape 5</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_sessions_week">Séances cette semaine</div><div class="stat-value accent" id="ps-week">—</div><div class="stat-sub" data-i18n="stat_delivered">réalisées</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_scheduled_week">Planifiées cette semaine</div><div class="stat-value" id="ps-scheduled-week">—</div><div class="stat-sub" data-i18n="stat_planned">prévues</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_upcoming">À venir</div><div class="stat-value" id="ps-upcoming">—</div><div class="stat-sub" data-i18n="stat_scheduled">planifiées</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_avg_score">Score moyen</div><div class="stat-value" id="ps-avg">—</div><div class="stat-sub" data-i18n="stat_across_cases">tous dossiers</div></div>
+          <div class="stat-card"><div class="stat-label" data-i18n="stat_at_risk">À risque</div><div class="stat-value danger" id="ps-risk">—</div><div class="stat-sub" data-i18n="stat_need_attention">à surveiller</div></div>
         </div>
       </div>
 
       <div class="two-col">
         <div>
           <div class="card psych-only">
-            <div class="card-header"><h3>Today's Schedule</h3><button class="btn btn-ghost btn-sm" onclick="showPanel('schedule','nav-schedule')">+ Add</button></div>
-            <div id="today-list"><div class="empty-state"><div class="empty-icon">📅</div><p>No sessions today</p></div></div>
+            <div class="card-header"><h3 data-i18n="today_schedule">Programme du jour</h3><button class="btn btn-ghost btn-sm" onclick="showPanel('schedule','nav-schedule')" data-i18n="add_short">+ Ajouter</button></div>
+            <div id="today-list"><div class="empty-state"><div class="empty-icon">📅</div><p data-i18n="no_sessions_today">Aucune séance aujourd'hui</p></div></div>
           </div>
           <div class="card psych-only">
-            <div class="card-header"><h3>Overdue Cases</h3></div>
-            <div id="dash-overdue"><div class="empty-state"><div class="empty-icon">✓</div><p>All cases up to date</p></div></div>
+            <div class="card-header"><h3 data-i18n="overdue_cases">Dossiers en retard</h3></div>
+            <div id="dash-overdue"><div class="empty-state"><div class="empty-icon">✓</div><p data-i18n="all_uptodate">Tous les dossiers sont à jour</p></div></div>
           </div>
         </div>
         <div>
           <div class="card">
-            <div class="card-header"><h3>Foundation Stats</h3></div>
+            <div class="card-header"><h3 data-i18n="foundation_stats">Statistiques de la fondation</h3></div>
             <div class="card-body" style="display:flex;flex-direction:column;gap:1rem">
-              <div><div class="stat-label">Total Cases (Foundation)</div><div style="font-size:1.5rem;font-family:'Fraunces',serif" id="f-total">—</div></div>
-              <div><div class="stat-label">Active</div><div style="font-size:1.5rem;font-family:'Fraunces',serif" id="f-active">—</div></div>
-              <div><div class="stat-label">Sessions Delivered</div><div style="font-size:1.5rem;font-family:'Fraunces',serif" id="f-sessions">—</div></div>
-              <div><div class="stat-label">Your Role</div><span class="badge badge-role" id="dash-role">—</span></div>
+              <div><div class="stat-label" data-i18n="total_cases_foundation">Total des dossiers (Fondation)</div><div style="font-size:1.5rem;font-family:'Fraunces',serif" id="f-total">—</div></div>
+              <div><div class="stat-label" data-i18n="active">Actifs</div><div style="font-size:1.5rem;font-family:'Fraunces',serif" id="f-active">—</div></div>
+              <div><div class="stat-label" data-i18n="sessions_delivered">Séances réalisées</div><div style="font-size:1.5rem;font-family:'Fraunces',serif" id="f-sessions">—</div></div>
+              <div><div class="stat-label" data-i18n="your_role">Votre rôle</div><span class="badge badge-role" id="dash-role">—</span></div>
             </div>
           </div>
           <div class="card ledger-only">
-            <div class="card-header"><h3>Financial</h3></div>
+            <div class="card-header"><h3 data-i18n="financial">Finances</h3></div>
             <div class="card-body">
-              <div><div class="stat-label">Balance (XAF)</div><div style="font-size:1.5rem;font-family:'Fraunces',serif;color:var(--success)" id="f-balance">—</div></div>
+              <div><div class="stat-label" data-i18n="balance_xaf">Solde (XAF)</div><div style="font-size:1.5rem;font-family:'Fraunces',serif;color:var(--success)" id="f-balance">—</div></div>
             </div>
           </div>
         </div>
@@ -317,72 +336,72 @@ tr:hover td { background: var(--bg); }
     <!-- MY CASES -->
     <div class="panel" id="panel-cases">
       <div class="page-header">
-        <div><h2>My Cases</h2><p>All children assigned to you.</p></div>
-        <button class="btn btn-primary btn-sm" onclick="showPanel('intake','nav-intake')">+ New Case</button>
+        <div><h2 data-i18n="my_cases_title">Mes Dossiers</h2><p data-i18n="my_cases_sub">Tous les enfants qui vous sont assignés.</p></div>
+        <button class="btn btn-primary btn-sm" onclick="showPanel('intake','nav-intake')" data-i18n="new_case_short">+ Nouveau Dossier</button>
       </div>
       <div class="card">
-        <div class="search-bar"><input type="text" id="case-search" placeholder="Search by case code..." oninput="filterCases()"></div>
+        <div class="search-bar"><input type="text" id="case-search" data-i18n-placeholder="search_case_code" placeholder="Rechercher par code dossier..." oninput="filterCases()"></div>
         <div class="filter-bar">
-          <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-          <button class="filter-btn" onclick="setFilter('overdue', this)">Overdue</button>
-          <button class="filter-btn" onclick="setFilter('risk', this)">At Risk</button>
-          <button class="filter-btn" onclick="setFilter('active', this)">Active</button>
-          <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+          <button class="filter-btn active" onclick="setFilter('all', this)" data-i18n="filter_all">Tous</button>
+          <button class="filter-btn" onclick="setFilter('overdue', this)" data-i18n="filter_overdue">En retard</button>
+          <button class="filter-btn" onclick="setFilter('risk', this)" data-i18n="filter_risk">À risque</button>
+          <button class="filter-btn" onclick="setFilter('active', this)" data-i18n="filter_active">Actifs</button>
+          <button class="filter-btn" onclick="setFilter('completed', this)" data-i18n="filter_completed">Terminés</button>
         </div>
-        <div id="cases-list"><div class="empty-state"><div class="empty-icon">👥</div><p>Loading cases...</p></div></div>
+        <div id="cases-list"><div class="empty-state"><div class="empty-icon">👥</div><p data-i18n="loading_cases">Chargement des dossiers...</p></div></div>
       </div>
     </div>
 
     <!-- CASE DETAIL -->
     <div id="case-detail-panel">
       <div class="detail-header">
-        <button class="back-btn" onclick="backToCases()">← Back</button>
+        <button class="back-btn" onclick="backToCases()"><span data-i18n="back">← Retour</span></button>
         <div style="flex:1">
           <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
             <h2 style="font-family:'Fraunces',serif;font-size:1.5rem" id="detail-case-code">—</h2>
-            <span class="stage-pill stage-1" id="detail-stage-pill">Stage —</span>
-            <span id="detail-risk-badge" style="display:none" class="risk-badge">⚠ At Risk</span>
+            <span class="stage-pill stage-1" id="detail-stage-pill"><span data-i18n="stage">Étape</span> —</span>
+            <span id="detail-risk-badge" style="display:none" class="risk-badge">⚠ <span data-i18n="at_risk">À risque</span></span>
           </div>
           <div class="detail-hash" id="detail-hash">—</div>
         </div>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-          <button class="btn btn-warning btn-sm" id="risk-toggle-btn" onclick="toggleRisk(this)">⚠ Flag Risk</button>
-          <button class="btn btn-ghost btn-sm" onclick="openTransferModal()">Transfer</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteCase(this)">Delete</button>
+          <button class="btn btn-warning btn-sm" id="risk-toggle-btn" onclick="toggleRisk(this)">⚠ <span data-i18n="flag_risk">Signaler à risque</span></button>
+          <button class="btn btn-ghost btn-sm" onclick="openTransferModal()" data-i18n="transfer">Transférer</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCase(this)" data-i18n="delete">Supprimer</button>
         </div>
       </div>
 
       <div id="velocity-section" style="display:none">
         <div class="velocity-card">
-          <div><div class="velocity-label">Score Trend</div><div class="velocity-value" id="detail-velocity">—</div></div>
-          <div><div class="velocity-label">Recent Change</div><div class="velocity-desc" id="detail-velocity-desc">—</div></div>
-          <div><div class="velocity-label">Intake Date</div><div class="velocity-desc" id="detail-intake">—</div></div>
+          <div><div class="velocity-label" data-i18n="score_trend">Tendance du score</div><div class="velocity-value" id="detail-velocity">—</div></div>
+          <div><div class="velocity-label" data-i18n="recent_change">Changement récent</div><div class="velocity-desc" id="detail-velocity-desc">—</div></div>
+          <div><div class="velocity-label" data-i18n="intake_date">Date d'admission</div><div class="velocity-desc" id="detail-intake">—</div></div>
         </div>
       </div>
 
       <div class="two-col">
         <div>
           <div class="card">
-            <div class="card-header"><h3>Assessment History</h3><button class="btn btn-ghost btn-sm" onclick="openAssessmentModal()">+ Add</button></div>
-            <div id="detail-assessments"><div class="empty-state"><p>No assessments yet</p></div></div>
+            <div class="card-header"><h3 data-i18n="assessment_history">Historique des évaluations</h3><button class="btn btn-ghost btn-sm" onclick="openAssessmentModal()" data-i18n="add_short">+ Ajouter</button></div>
+            <div id="detail-assessments"><div class="empty-state"><p data-i18n="no_assessments">Aucune évaluation pour l'instant</p></div></div>
           </div>
           <div class="card">
-            <div class="card-header"><h3>Stage Progression</h3></div>
+            <div class="card-header"><h3 data-i18n="stage_progression">Progression des étapes</h3></div>
             <div class="card-body">
               <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
-                <span class="stage-pill stage-1" id="detail-stage-pill2">Stage —</span>
+                <span class="stage-pill stage-1" id="detail-stage-pill2"><span data-i18n="stage">Étape</span> —</span>
                 <span style="font-size:0.875rem;color:var(--muted)" id="detail-stage-name">—</span>
               </div>
               <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
-                <button class="btn btn-primary btn-sm" onclick="advanceStageFromDetail(this)">Advance Stage →</button>
+                <button class="btn btn-primary btn-sm" onclick="advanceStageFromDetail(this)" data-i18n="advance_stage">Avancer d'étape →</button>
               </div>
             </div>
           </div>
         </div>
         <div>
           <div class="card">
-            <div class="card-header"><h3>Sessions</h3><button class="btn btn-ghost btn-sm" onclick="openSessionFromDetail()">+ Log</button></div>
-            <div id="detail-sessions"><div class="empty-state"><p>No sessions yet</p></div></div>
+            <div class="card-header"><h3 data-i18n="sessions">Séances</h3><button class="btn btn-ghost btn-sm" onclick="openSessionFromDetail()" data-i18n="log_short">+ Enregistrer</button></div>
+            <div id="detail-sessions"><div class="empty-state"><p data-i18n="no_sessions_yet">Aucune séance pour l'instant</p></div></div>
           </div>
         </div>
       </div>
@@ -390,17 +409,17 @@ tr:hover td { background: var(--bg); }
 
     <!-- INTAKE -->
     <div class="panel" id="panel-intake">
-      <div class="page-header"><div><h2>Register New Case</h2><p>Child identity is anonymized immediately upon registration.</p></div></div>
+      <div class="page-header"><div><h2 data-i18n="register_new_case">Enregistrer un nouveau dossier</h2><p data-i18n="intake_sub">L'identité de l'enfant est immédiatement anonymisée lors de l'enregistrement.</p></div></div>
       <div class="form-card" style="max-width:520px">
         <div class="alert alert-error" id="intake-error"></div>
         <div class="alert alert-success" id="intake-success"></div>
-        <div class="field"><label>Case Code <span style="font-weight:400;color:var(--muted)">(your reference)</span></label><input type="text" id="intake-code" placeholder="e.g. JD-2014"></div>
-        <div class="field"><label>Child Name <span style="font-weight:400;color:var(--muted)">(never stored)</span></label><input type="text" id="intake-name" placeholder="Full name"></div>
-        <div class="field"><label>Date of Birth</label><input type="date" id="intake-dob"></div>
-        <div class="field"><label>Assigned Psychologist ID</label><input type="number" id="intake-psych" id="intake-psych"></div>
-        <button class="btn btn-primary btn-full" onclick="submitIntake(this)">Register Case →</button>
+        <div class="field"><label><span data-i18n="case_code">Code du dossier</span> <span style="font-weight:400;color:var(--muted)" data-i18n="your_reference">(votre référence)</span></label><input type="text" id="intake-code" placeholder="ex. JD-2014"></div>
+        <div class="field"><label><span data-i18n="child_name">Nom de l'enfant</span> <span style="font-weight:400;color:var(--muted)" data-i18n="never_stored">(jamais conservé)</span></label><input type="text" id="intake-name" data-i18n-placeholder="full_name" placeholder="Nom complet"></div>
+        <div class="field"><label data-i18n="date_of_birth">Date de naissance</label><input type="date" id="intake-dob"></div>
+        <div class="field"><label data-i18n="assigned_psych_id">ID du psychologue assigné</label><input type="number" id="intake-psych"></div>
+        <button class="btn btn-primary btn-full" onclick="submitIntake(this)" data-i18n="register_case">Enregistrer le dossier →</button>
         <div class="result-box" id="intake-result">
-          <strong>Case Hash (h_alpha) — copy and save this immediately</strong>
+          <strong data-i18n="case_hash_save">Hachage du dossier (h_alpha) — copiez et enregistrez ceci immédiatement</strong>
           <span id="intake-hash"></span>
         </div>
       </div>
@@ -409,53 +428,53 @@ tr:hover td { background: var(--bg); }
     <!-- SESSIONS -->
     <div class="panel" id="panel-sessions">
       <div class="page-header">
-        <div><h2>All Sessions</h2><p>Past and upcoming sessions across all your cases.</p></div>
-        <button class="btn btn-primary btn-sm" onclick="showPanel('schedule','nav-schedule')">+ Schedule</button>
+        <div><h2 data-i18n="all_sessions">Toutes les séances</h2><p data-i18n="all_sessions_sub">Séances passées et à venir pour tous vos dossiers.</p></div>
+        <button class="btn btn-primary btn-sm" onclick="showPanel('schedule','nav-schedule')" data-i18n="schedule_short">+ Planifier</button>
       </div>
       <div class="card">
         <div class="filter-bar">
-          <button class="filter-btn active" onclick="setSessionFilter('all', this)">All</button>
-          <button class="filter-btn" onclick="setSessionFilter('upcoming', this)">Upcoming</button>
-          <button class="filter-btn" onclick="setSessionFilter('past', this)">Past</button>
+          <button class="filter-btn active" onclick="setSessionFilter('all', this)" data-i18n="filter_all">Tous</button>
+          <button class="filter-btn" onclick="setSessionFilter('upcoming', this)" data-i18n="filter_upcoming">À venir</button>
+          <button class="filter-btn" onclick="setSessionFilter('past', this)" data-i18n="filter_past">Passées</button>
         </div>
-        <div id="sessions-list"><div class="empty-state"><div class="empty-icon">📅</div><p>Loading sessions...</p></div></div>
+        <div id="sessions-list"><div class="empty-state"><div class="empty-icon">📅</div><p data-i18n="loading_sessions">Chargement des séances...</p></div></div>
       </div>
     </div>
 
     <!-- SCHEDULE SESSION -->
     <div class="panel" id="panel-schedule">
-      <div class="page-header"><div><h2>Schedule Session</h2><p>Log a past session or schedule a future one.</p></div></div>
+      <div class="page-header"><div><h2 data-i18n="schedule_session">Planifier une séance</h2><p data-i18n="schedule_sub">Enregistrez une séance passée ou planifiez-en une future.</p></div></div>
       <div class="form-card" style="max-width:520px">
         <div class="alert alert-error" id="schedule-error"></div>
         <div class="alert alert-success" id="schedule-success"></div>
-        <div class="field"><label>Case Code or Hash</label><input type="text" id="sched-hash" placeholder="Case code or h_alpha" oninput="resolveCase()"></div>
+        <div class="field"><label data-i18n="case_code_or_hash">Code dossier ou hachage</label><input type="text" id="sched-hash" data-i18n-placeholder="case_code_or_hash_ph" placeholder="Code dossier ou h_alpha" oninput="resolveCase()"></div>
         <div id="sched-case-preview" style="display:none;margin-bottom:1rem;padding:0.75rem;background:var(--bg);border-radius:8px;border:1px solid var(--border);font-size:0.85rem"></div>
-        <div class="field"><label>Session Type</label><select id="sched-type"><option value="individual">Individual</option><option value="group">Group</option><option value="family">Family</option><option value="assessment">Assessment</option></select></div>
-        <div class="field"><label>Date & Time</label><input type="datetime-local" id="sched-date"></div>
-        <div class="field"><label>Notes <span style="font-weight:400;color:var(--muted)">(optional)</span></label><textarea id="sched-notes" placeholder="Session notes..."></textarea></div>
-        <button class="btn btn-primary btn-full" onclick="submitSchedule(this)">Save Session →</button>
+        <div class="field"><label data-i18n="session_type">Type de séance</label><select id="sched-type"><option value="individual" data-i18n="type_individual">Individuelle</option><option value="group" data-i18n="type_group">Groupe</option><option value="family" data-i18n="type_family">Famille</option><option value="assessment" data-i18n="type_assessment">Évaluation</option></select></div>
+        <div class="field"><label data-i18n="date_time">Date et heure</label><input type="datetime-local" id="sched-date"></div>
+        <div class="field"><label><span data-i18n="notes">Notes</span> <span style="font-weight:400;color:var(--muted)" data-i18n="optional">(facultatif)</span></label><textarea id="sched-notes" data-i18n-placeholder="session_notes_ph" placeholder="Notes de séance..."></textarea></div>
+        <button class="btn btn-primary btn-full" onclick="submitSchedule(this)" data-i18n="save_session">Enregistrer la séance →</button>
       </div>
     </div>
 
     <!-- LEDGER -->
     <div class="panel" id="panel-ledger">
-      <div class="page-header"><div><h2>Financial Ledger</h2><p>Record and track all foundation income and expenses.</p></div></div>
+      <div class="page-header"><div><h2 data-i18n="financial_ledger">Registre financier</h2><p data-i18n="ledger_sub">Enregistrez et suivez les revenus et dépenses de la fondation.</p></div></div>
       <div class="two-col">
         <div class="form-card">
-          <h2>Record Transaction</h2>
-          <p class="form-subtitle">All transactions are permanently logged.</p>
+          <h2 data-i18n="record_transaction">Enregistrer une transaction</h2>
+          <p class="form-subtitle" data-i18n="ledger_subtitle">Toutes les transactions sont enregistrées de façon permanente.</p>
           <div class="alert alert-error" id="ledger-error"></div>
           <div class="alert alert-success" id="ledger-success"></div>
-          <div class="field"><label>Amount (XAF)</label><input type="number" id="ledger-amount" placeholder="e.g. 50000"></div>
-          <div class="field"><label>Direction</label><select id="ledger-direction"><option value="in">Income</option><option value="out">Expense</option></select></div>
-          <div class="field"><label>Category</label><input type="text" id="ledger-category" placeholder="e.g. donation, supplies"></div>
-          <div class="field"><label>Reference</label><input type="text" id="ledger-reference" placeholder="e.g. DON-2026-002"></div>
-          <button class="btn btn-primary btn-full" onclick="submitTransaction(this)">Record →</button>
+          <div class="field"><label data-i18n="amount_xaf">Montant (XAF)</label><input type="number" id="ledger-amount" placeholder="ex. 50000"></div>
+          <div class="field"><label data-i18n="direction">Type</label><select id="ledger-direction"><option value="in" data-i18n="income">Revenu</option><option value="out" data-i18n="expense">Dépense</option></select></div>
+          <div class="field"><label data-i18n="category">Catégorie</label><input type="text" id="ledger-category" data-i18n-placeholder="category_ph" placeholder="ex. don, fournitures"></div>
+          <div class="field"><label data-i18n="reference">Référence</label><input type="text" id="ledger-reference" placeholder="ex. DON-2026-002"></div>
+          <button class="btn btn-primary btn-full" onclick="submitTransaction(this)" data-i18n="record">Enregistrer →</button>
         </div>
         <div class="card" style="height:fit-content">
-          <div class="card-header"><h3>Transaction History</h3></div>
-          <table><thead><tr><th>Reference</th><th>Category</th><th>Amount</th><th>Type</th></tr></thead>
-          <tbody id="ledger-tbody"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">Loading...</td></tr></tbody></table>
+          <div class="card-header"><h3 data-i18n="transaction_history">Historique des transactions</h3></div>
+          <table><thead><tr><th data-i18n="reference">Référence</th><th data-i18n="category">Catégorie</th><th data-i18n="amount">Montant</th><th data-i18n="type">Type</th></tr></thead>
+          <tbody id="ledger-tbody"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem" data-i18n="loading">Chargement...</td></tr></tbody></table>
         </div>
       </div>
     </div>
@@ -466,15 +485,15 @@ tr:hover td { background: var(--bg); }
 <!-- ASSESSMENT MODAL -->
 <div class="modal-overlay" id="assessment-modal">
   <div class="modal">
-    <h3>Log Assessment</h3>
+    <h3 data-i18n="log_assessment">Enregistrer une évaluation</h3>
     <div class="alert alert-error" id="modal-assessment-error"></div>
     <div class="alert alert-success" id="modal-assessment-success"></div>
-    <div class="field"><label>Stage</label><select id="modal-stage"><option value="1">Stage 1 — Initial</option><option value="2">Stage 2 — Stabilization</option><option value="3">Stage 3 — Processing</option><option value="4">Stage 4 — Integration</option><option value="5">Stage 5 — Recovery</option></select></div>
-    <div class="field"><label>Score (0–100)</label><input type="number" id="modal-score" min="0" max="100" placeholder="e.g. 67.5"></div>
-    <div class="field"><label>Date</label><input type="date" id="modal-date"></div>
+    <div class="field"><label data-i18n="stage">Étape</label><select id="modal-stage"><option value="1" data-i18n="stage1_initial">Étape 1 — Initiale</option><option value="2" data-i18n="stage2_stabilization">Étape 2 — Stabilisation</option><option value="3" data-i18n="stage3_processing">Étape 3 — Traitement</option><option value="4" data-i18n="stage4_integration">Étape 4 — Intégration</option><option value="5" data-i18n="stage5_recovery">Étape 5 — Rétablissement</option></select></div>
+    <div class="field"><label data-i18n="score_0_100">Score (0–100)</label><input type="number" id="modal-score" min="0" max="100" placeholder="ex. 67.5"></div>
+    <div class="field"><label data-i18n="date">Date</label><input type="date" id="modal-date"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('assessment-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitModalAssessment(this)">Submit</button>
+      <button class="btn btn-ghost" onclick="closeModal('assessment-modal')" data-i18n="cancel">Annuler</button>
+      <button class="btn btn-primary" onclick="submitModalAssessment(this)" data-i18n="submit">Soumettre</button>
     </div>
   </div>
 </div>
@@ -482,15 +501,15 @@ tr:hover td { background: var(--bg); }
 <!-- SESSION FROM DETAIL MODAL -->
 <div class="modal-overlay" id="session-modal">
   <div class="modal">
-    <h3>Log Session</h3>
+    <h3 data-i18n="log_session">Enregistrer une séance</h3>
     <div class="alert alert-error" id="modal-session-error"></div>
     <div class="alert alert-success" id="modal-session-success"></div>
-    <div class="field"><label>Session Type</label><select id="modal-session-type"><option value="individual">Individual</option><option value="group">Group</option><option value="family">Family</option><option value="assessment">Assessment</option></select></div>
-    <div class="field"><label>Date & Time</label><input type="datetime-local" id="modal-session-date"></div>
-    <div class="field"><label>Notes</label><textarea id="modal-session-notes" placeholder="Session notes..."></textarea></div>
+    <div class="field"><label data-i18n="session_type">Type de séance</label><select id="modal-session-type"><option value="individual" data-i18n="type_individual">Individuelle</option><option value="group" data-i18n="type_group">Groupe</option><option value="family" data-i18n="type_family">Famille</option><option value="assessment" data-i18n="type_assessment">Évaluation</option></select></div>
+    <div class="field"><label data-i18n="date_time">Date et heure</label><input type="datetime-local" id="modal-session-date"></div>
+    <div class="field"><label data-i18n="notes">Notes</label><textarea id="modal-session-notes" data-i18n-placeholder="session_notes_ph" placeholder="Notes de séance..."></textarea></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('session-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitModalSession(this)">Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('session-modal')" data-i18n="cancel">Annuler</button>
+      <button class="btn btn-primary" onclick="submitModalSession(this)" data-i18n="save">Enregistrer</button>
     </div>
   </div>
 </div>
@@ -498,12 +517,12 @@ tr:hover td { background: var(--bg); }
 <!-- TRANSFER MODAL -->
 <div class="modal-overlay" id="transfer-modal">
   <div class="modal">
-    <h3>Transfer Case</h3>
+    <h3 data-i18n="transfer_case">Transférer le dossier</h3>
     <div class="alert alert-error" id="modal-transfer-error"></div>
-    <div class="field"><label>Transfer to Psychologist ID</label><input type="number" id="modal-transfer-id" placeholder="Psychologist ID"></div>
+    <div class="field"><label data-i18n="transfer_to_id">Transférer vers l'ID du psychologue</label><input type="number" id="modal-transfer-id" data-i18n-placeholder="psych_id_ph" placeholder="ID du psychologue"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('transfer-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitTransfer(this)">Transfer</button>
+      <button class="btn btn-ghost" onclick="closeModal('transfer-modal')" data-i18n="cancel">Annuler</button>
+      <button class="btn btn-primary" onclick="submitTransfer(this)" data-i18n="transfer">Transférer</button>
     </div>
   </div>
 </div>
@@ -511,18 +530,231 @@ tr:hover td { background: var(--bg); }
 <script>
 const API = 'https://nbv-foundation-production.up.railway.app';
 let TOKEN = '', USER = {}, CURRENT_CASE = null, ALL_CASES = [], ALL_SESSIONS = [], CASE_FILTER = 'all', SESSION_FILTER = 'all';
-const STAGE_NAMES = {1:'Initial',2:'Stabilization',3:'Processing',4:'Integration',5:'Recovery'};
+let LANG = localStorage.getItem('nbv_lang') || 'fr';
+
+const STAGE_NAMES = {
+  fr: {1:'Initiale',2:'Stabilisation',3:'Traitement',4:'Intégration',5:'Rétablissement'},
+  en: {1:'Initial',2:'Stabilization',3:'Processing',4:'Integration',5:'Recovery'}
+};
 const ROLE_NAV = { psychologist:['dashboard','cases','intake','sessions','schedule'], admin:['dashboard','cases','intake','sessions','schedule','ledger'], auditor:['dashboard'], secretary:['dashboard','ledger'] };
+
+const I18N = {
+  fr: {
+    login_subtitle: "Plateforme de récupération des enfants — Accès personnel uniquement",
+    email: "Email", password: "Mot de passe", sign_in: "Se connecter →",
+    brand_sub: "Plateforme de récupération des enfants",
+    nav_overview: "Aperçu", nav_dashboard: "Tableau de bord",
+    nav_patients: "Patients", nav_cases: "Mes Dossiers", nav_intake: "Nouveau Dossier",
+    nav_sessions_section: "Séances", nav_sessions: "Toutes les Séances", nav_schedule: "Planifier une Séance",
+    nav_finance: "Finances", nav_ledger: "Registre",
+    your_id: "Votre ID", sign_out: "Se déconnecter",
+    stat_my_cases: "Mes Dossiers", stat_assigned: "assignés",
+    stat_completed: "Terminés", stat_stage5: "étape 5",
+    stat_sessions_week: "Séances cette semaine", stat_delivered: "réalisées",
+    stat_scheduled_week: "Planifiées cette semaine", stat_planned: "prévues",
+    stat_upcoming: "À venir", stat_scheduled: "planifiées",
+    stat_avg_score: "Score moyen", stat_across_cases: "tous dossiers",
+    stat_at_risk: "À risque", stat_need_attention: "à surveiller",
+    today_schedule: "Programme du jour", add_short: "+ Ajouter",
+    no_sessions_today: "Aucune séance aujourd'hui",
+    overdue_cases: "Dossiers en retard", all_uptodate: "Tous les dossiers sont à jour",
+    foundation_stats: "Statistiques de la fondation",
+    total_cases_foundation: "Total des dossiers (Fondation)", active: "Actifs",
+    sessions_delivered: "Séances réalisées", your_role: "Votre rôle",
+    financial: "Finances", balance_xaf: "Solde (XAF)",
+    my_cases_title: "Mes Dossiers", my_cases_sub: "Tous les enfants qui vous sont assignés.",
+    new_case_short: "+ Nouveau Dossier", search_case_code: "Rechercher par code dossier...",
+    filter_all: "Tous", filter_overdue: "En retard", filter_risk: "À risque",
+    filter_active: "Actifs", filter_completed: "Terminés",
+    loading_cases: "Chargement des dossiers...",
+    back: "← Retour", stage: "Étape", at_risk: "À risque",
+    flag_risk: "Signaler à risque", unflag_risk: "✓ Annuler le risque",
+    transfer: "Transférer", delete: "Supprimer",
+    score_trend: "Tendance du score", recent_change: "Changement récent", intake_date: "Date d'admission",
+    assessment_history: "Historique des évaluations", no_assessments: "Aucune évaluation pour l'instant",
+    stage_progression: "Progression des étapes", advance_stage: "Avancer d'étape →",
+    sessions: "Séances", log_short: "+ Enregistrer", no_sessions_yet: "Aucune séance pour l'instant",
+    register_new_case: "Enregistrer un nouveau dossier",
+    intake_sub: "L'identité de l'enfant est immédiatement anonymisée lors de l'enregistrement.",
+    case_code: "Code du dossier", your_reference: "(votre référence)",
+    child_name: "Nom de l'enfant", never_stored: "(jamais conservé)", full_name: "Nom complet",
+    date_of_birth: "Date de naissance", assigned_psych_id: "ID du psychologue assigné",
+    register_case: "Enregistrer le dossier →", case_hash_save: "Hachage du dossier (h_alpha) — copiez et enregistrez ceci immédiatement",
+    all_sessions: "Toutes les séances", all_sessions_sub: "Séances passées et à venir pour tous vos dossiers.",
+    schedule_short: "+ Planifier", filter_upcoming: "À venir", filter_past: "Passées",
+    loading_sessions: "Chargement des séances...",
+    schedule_session: "Planifier une séance", schedule_sub: "Enregistrez une séance passée ou planifiez-en une future.",
+    case_code_or_hash: "Code dossier ou hachage", case_code_or_hash_ph: "Code dossier ou h_alpha",
+    session_type: "Type de séance", type_individual: "Individuelle", type_group: "Groupe",
+    type_family: "Famille", type_assessment: "Évaluation",
+    date_time: "Date et heure", notes: "Notes", optional: "(facultatif)", session_notes_ph: "Notes de séance...",
+    save_session: "Enregistrer la séance →",
+    financial_ledger: "Registre financier", ledger_sub: "Enregistrez et suivez les revenus et dépenses de la fondation.",
+    record_transaction: "Enregistrer une transaction", ledger_subtitle: "Toutes les transactions sont enregistrées de façon permanente.",
+    amount_xaf: "Montant (XAF)", direction: "Type", income: "Revenu", expense: "Dépense",
+    category: "Catégorie", category_ph: "ex. don, fournitures", reference: "Référence",
+    record: "Enregistrer →", transaction_history: "Historique des transactions",
+    amount: "Montant", type: "Type", loading: "Chargement...",
+    log_assessment: "Enregistrer une évaluation",
+    stage1_initial: "Étape 1 — Initiale", stage2_stabilization: "Étape 2 — Stabilisation",
+    stage3_processing: "Étape 3 — Traitement", stage4_integration: "Étape 4 — Intégration",
+    stage5_recovery: "Étape 5 — Rétablissement",
+    score_0_100: "Score (0–100)", date: "Date", cancel: "Annuler", submit: "Soumettre",
+    log_session: "Enregistrer une séance", save: "Enregistrer",
+    transfer_case: "Transférer le dossier", transfer_to_id: "Transférer vers l'ID du psychologue",
+    psych_id_ph: "ID du psychologue",
+    case_registered: "Dossier enregistré. Conservez le hachage ci-dessous.",
+    assessment_logged: "Évaluation enregistrée.", session_logged: "Séance enregistrée.",
+    session_saved: "Séance enregistrée.", transaction_recorded: "Transaction enregistrée.",
+    confirm_unflag: "Retirer le signalement à risque de ce dossier ?",
+    confirm_flag: "Signaler ce dossier comme à risque ?",
+    confirm_delete_case: "Supprimer ce dossier ? Il sera masqué mais conservé pour révision par l'administrateur.",
+    confirm_delete_session: "Supprimer cette séance ?",
+    confirm_delete_assessment: "Supprimer cette évaluation ?",
+    already_stage5: "Déjà à l'étape 5.",
+    confirm_advance: "Avancer à l'étape",
+    upcoming: "À venir", past: "Passée",
+    open: "Ouvrir", no_cases_match: "Aucun dossier ne correspond",
+    signing_in: "Connexion...", registering: "Enregistrement...", submitting: "Envoi...",
+    saving: "Enregistrement...", recording: "Enregistrement...", transferring: "Transfert...",
+    no_transactions: "Aucune transaction pour l'instant", no_sessions_found: "Aucune séance trouvée",
+    failed_to_load: "Échec du chargement", clinical_judgment: "jugement clinique requis",
+    pts_day: "pts/jour",
+    greeting_morning: "Bonjour", greeting_afternoon: "Bon après-midi", greeting_evening: "Bonsoir"
+  },
+  en: {
+    login_subtitle: "Child Recovery Platform — Staff Access Only",
+    email: "Email", password: "Password", sign_in: "Sign in →",
+    brand_sub: "Child Recovery Platform",
+    nav_overview: "Overview", nav_dashboard: "Dashboard",
+    nav_patients: "Patients", nav_cases: "My Cases", nav_intake: "New Case",
+    nav_sessions_section: "Sessions", nav_sessions: "All Sessions", nav_schedule: "Schedule Session",
+    nav_finance: "Finance", nav_ledger: "Ledger",
+    your_id: "Your ID", sign_out: "Sign out",
+    stat_my_cases: "My Cases", stat_assigned: "assigned",
+    stat_completed: "Completed", stat_stage5: "stage 5",
+    stat_sessions_week: "Sessions This Week", stat_delivered: "delivered",
+    stat_scheduled_week: "Scheduled This Week", stat_planned: "planned",
+    stat_upcoming: "Upcoming", stat_scheduled: "scheduled",
+    stat_avg_score: "Avg Score", stat_across_cases: "across cases",
+    stat_at_risk: "At Risk", stat_need_attention: "need attention",
+    today_schedule: "Today's Schedule", add_short: "+ Add",
+    no_sessions_today: "No sessions today",
+    overdue_cases: "Overdue Cases", all_uptodate: "All cases up to date",
+    foundation_stats: "Foundation Stats",
+    total_cases_foundation: "Total Cases (Foundation)", active: "Active",
+    sessions_delivered: "Sessions Delivered", your_role: "Your Role",
+    financial: "Financial", balance_xaf: "Balance (XAF)",
+    my_cases_title: "My Cases", my_cases_sub: "All children assigned to you.",
+    new_case_short: "+ New Case", search_case_code: "Search by case code...",
+    filter_all: "All", filter_overdue: "Overdue", filter_risk: "At Risk",
+    filter_active: "Active", filter_completed: "Completed",
+    loading_cases: "Loading cases...",
+    back: "← Back", stage: "Stage", at_risk: "At Risk",
+    flag_risk: "Flag Risk", unflag_risk: "✓ Unflag Risk",
+    transfer: "Transfer", delete: "Delete",
+    score_trend: "Score Trend", recent_change: "Recent Change", intake_date: "Intake Date",
+    assessment_history: "Assessment History", no_assessments: "No assessments yet",
+    stage_progression: "Stage Progression", advance_stage: "Advance Stage →",
+    sessions: "Sessions", log_short: "+ Log", no_sessions_yet: "No sessions yet",
+    register_new_case: "Register New Case",
+    intake_sub: "Child identity is anonymized immediately upon registration.",
+    case_code: "Case Code", your_reference: "(your reference)",
+    child_name: "Child Name", never_stored: "(never stored)", full_name: "Full name",
+    date_of_birth: "Date of Birth", assigned_psych_id: "Assigned Psychologist ID",
+    register_case: "Register Case →", case_hash_save: "Case Hash (h_alpha) — copy and save this immediately",
+    all_sessions: "All Sessions", all_sessions_sub: "Past and upcoming sessions across all your cases.",
+    schedule_short: "+ Schedule", filter_upcoming: "Upcoming", filter_past: "Past",
+    loading_sessions: "Loading sessions...",
+    schedule_session: "Schedule Session", schedule_sub: "Log a past session or schedule a future one.",
+    case_code_or_hash: "Case Code or Hash", case_code_or_hash_ph: "Case code or h_alpha",
+    session_type: "Session Type", type_individual: "Individual", type_group: "Group",
+    type_family: "Family", type_assessment: "Assessment",
+    date_time: "Date & Time", notes: "Notes", optional: "(optional)", session_notes_ph: "Session notes...",
+    save_session: "Save Session →",
+    financial_ledger: "Financial Ledger", ledger_sub: "Record and track all foundation income and expenses.",
+    record_transaction: "Record Transaction", ledger_subtitle: "All transactions are permanently logged.",
+    amount_xaf: "Amount (XAF)", direction: "Direction", income: "Income", expense: "Expense",
+    category: "Category", category_ph: "e.g. donation, supplies", reference: "Reference",
+    record: "Record →", transaction_history: "Transaction History",
+    amount: "Amount", type: "Type", loading: "Loading...",
+    log_assessment: "Log Assessment",
+    stage1_initial: "Stage 1 — Initial", stage2_stabilization: "Stage 2 — Stabilization",
+    stage3_processing: "Stage 3 — Processing", stage4_integration: "Stage 4 — Integration",
+    stage5_recovery: "Stage 5 — Recovery",
+    score_0_100: "Score (0–100)", date: "Date", cancel: "Cancel", submit: "Submit",
+    log_session: "Log Session", save: "Save",
+    transfer_case: "Transfer Case", transfer_to_id: "Transfer to Psychologist ID",
+    psych_id_ph: "Psychologist ID",
+    case_registered: "Case registered. Save the hash below.",
+    assessment_logged: "Assessment logged.", session_logged: "Session logged.",
+    session_saved: "Session saved.", transaction_recorded: "Transaction recorded.",
+    confirm_unflag: "Remove at-risk flag from this case?",
+    confirm_flag: "Flag this case as at-risk?",
+    confirm_delete_case: "Delete this case? It will be hidden but preserved for admin review.",
+    confirm_delete_session: "Delete this session?",
+    confirm_delete_assessment: "Delete this assessment?",
+    already_stage5: "Already at stage 5.",
+    confirm_advance: "Advance to Stage",
+    upcoming: "Upcoming", past: "Past",
+    open: "Open", no_cases_match: "No cases match",
+    signing_in: "Signing in...", registering: "Registering...", submitting: "Submitting...",
+    saving: "Saving...", recording: "Recording...", transferring: "Transferring...",
+    no_transactions: "No transactions yet", no_sessions_found: "No sessions found",
+    failed_to_load: "Failed to load", clinical_judgment: "clinical judgment required",
+    pts_day: "pts/day",
+    greeting_morning: "Good morning", greeting_afternoon: "Good afternoon", greeting_evening: "Good evening"
+  }
+};
+
+function t(key) { return (I18N[LANG] && I18N[LANG][key]) || key; }
+
+function applyTranslations() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(key);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    el.placeholder = t(key);
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === LANG);
+  });
+  // dynamic bits that aren't simple data-i18n
+  if (Object.keys(USER).length) {
+    document.getElementById('dash-greeting').textContent = `${greeting()}, ${USER.name.split(' ')[0]}`;
+  }
+}
+
+function setLang(lang) {
+  LANG = lang;
+  localStorage.setItem('nbv_lang', lang);
+  applyTranslations();
+  // refresh any dynamically-rendered views so their text updates too
+  if (document.getElementById('app-screen').style.display === 'block') {
+    loadDashboard();
+    const casesPanelActive = document.getElementById('panel-cases')?.classList.contains('active');
+    if (casesPanelActive) loadMyCases();
+    const sessionsPanelActive = document.getElementById('panel-sessions')?.classList.contains('active');
+    if (sessionsPanelActive) loadAllSessions();
+    buildMobileNav();
+  }
+}
 
 function showAlert(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),5000); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 
-function greeting() { const h=new Date().getHours(); return h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
+function greeting() {
+  const h=new Date().getHours();
+  return h<12?t('greeting_morning'):h<17?t('greeting_afternoon'):t('greeting_evening');
+}
 
 async function login(btn) {
   btn = btn || document.querySelector('.auth-card .btn-primary');
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Signing in...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('signing_in');
   const email=document.getElementById('login-email').value, pass=document.getElementById('login-password').value;
   try {
     const res=await fetch(`${API}/token`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`username=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`});
@@ -544,7 +776,7 @@ function initApp() {
   document.getElementById('user-id-display').textContent=USER.id;
   document.getElementById('dash-role').textContent=USER.role;
   document.getElementById('dash-greeting').textContent=`${greeting()}, ${USER.name.split(' ')[0]}`;
-  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('dash-date').textContent=new Date().toLocaleDateString(LANG==='fr'?'fr-FR':'en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   // set today's date as default for schedule
   const now=new Date(); now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
   const nowStr=now.toISOString().slice(0,16);
@@ -555,6 +787,7 @@ function initApp() {
   document.getElementById('intake-psych').value=USER.id;
   applyRoleVisibility();
   buildMobileNav();
+  applyTranslations();
   loadDashboard();
 }
 
@@ -573,12 +806,20 @@ function applyRoleVisibility() {
 
 function buildMobileNav() {
   const allowed=ROLE_NAV[USER.role]||['dashboard'];
-  const labels={dashboard:'◈ Home',cases:'👥 Cases',intake:'＋ New',sessions:'📅 Sessions',schedule:'＋ Session',ledger:'₣ Ledger'};
+  const labels={
+    dashboard:(LANG==='fr'?'◈ Accueil':'◈ Home'),
+    cases:(LANG==='fr'?'👥 Dossiers':'👥 Cases'),
+    intake:(LANG==='fr'?'＋ Nouveau':'＋ New'),
+    sessions:'📅 '+t('sessions'),
+    schedule:(LANG==='fr'?'＋ Séance':'＋ Session'),
+    ledger:'₣ '+t('nav_ledger')
+  };
   const nav=document.getElementById('mobile-nav');
+  const activeIndex = nav.querySelector('.mobile-nav-btn.active') ? Array.from(nav.children).indexOf(nav.querySelector('.mobile-nav-btn.active')) : -1;
   nav.innerHTML='';
   allowed.forEach((key,i)=>{
     const btn=document.createElement('button');
-    btn.className='mobile-nav-btn'+(i===0?' active':'');
+    btn.className='mobile-nav-btn'+((i===0&&activeIndex===-1)||i===activeIndex?' active':'');
     btn.textContent=labels[key]||key;
     btn.onclick=()=>{ document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); showPanel(key,`nav-${key}`); };
     nav.appendChild(btn);
@@ -623,19 +864,24 @@ async function loadDashboard() {
     }
 
     if(todayRes.ok) {
-      const t=await todayRes.json();
+      const tt=await todayRes.json();
       const cont=document.getElementById('today-list');
-      if(!t.sessions.length) { cont.innerHTML='<div class="empty-state"><div class="empty-icon">📅</div><p>No sessions today</p></div>'; }
-      else { cont.innerHTML=t.sessions.map(s=>`<div class="today-session"><div class="today-time">${s.scheduled_at.slice(11,16)}</div><div class="today-info"><div class="today-case">${s.case_code||s.h_alpha.slice(0,8)+'...'}</div><div class="today-type">${s.session_type}</div></div><button class="btn btn-ghost btn-sm" onclick="openCase('${s.h_alpha}')">Open</button></div>`).join(''); }
+      if(!tt.sessions.length) { cont.innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><p>${t('no_sessions_today')}</p></div>`; }
+      else { cont.innerHTML=tt.sessions.map(s=>`<div class="today-session"><div class="today-time">${s.scheduled_at.slice(11,16)}</div><div class="today-info"><div class="today-case">${s.case_code||s.h_alpha.slice(0,8)+'...'}</div><div class="today-type">${translateSessionType(s.session_type)}</div></div><button class="btn btn-ghost btn-sm" onclick="openCase('${s.h_alpha}')">${t('open')}</button></div>`).join(''); }
     }
 
     if(overdueRes.ok) {
       const o=await overdueRes.json();
       const cont=document.getElementById('dash-overdue');
-      if(!o.overdue.length) { cont.innerHTML='<div class="empty-state"><div class="empty-icon">✓</div><p>All cases up to date</p></div>'; }
-      else { cont.innerHTML=o.overdue.map(c=>`<div class="case-row" onclick="openCase('${c.h_alpha}')"><div class="case-meta"><div class="case-info"><strong>${c.case_code||c.h_alpha.slice(0,10)+'...'}</strong> · Stage ${c.current_stage} <span class="overdue-badge">Overdue</span></div></div></div>`).join(''); }
+      if(!o.overdue.length) { cont.innerHTML=`<div class="empty-state"><div class="empty-icon">✓</div><p>${t('all_uptodate')}</p></div>`; }
+      else { cont.innerHTML=o.overdue.map(c=>`<div class="case-row" onclick="openCase('${c.h_alpha}')"><div class="case-meta"><div class="case-info"><strong>${c.case_code||c.h_alpha.slice(0,10)+'...'}</strong> · ${t('stage')} ${c.current_stage} <span class="overdue-badge">${t('filter_overdue')}</span></div></div></div>`).join(''); }
     }
   } catch(e) { console.error(e); }
+}
+
+function translateSessionType(type) {
+  const map = { individual: t('type_individual'), group: t('type_group'), family: t('type_family'), assessment: t('type_assessment') };
+  return map[type] || type;
 }
 
 async function loadMyCases() {
@@ -644,7 +890,7 @@ async function loadMyCases() {
     const d=await res.json();
     ALL_CASES=d.cases;
     renderCases();
-  } catch(e) { document.getElementById('cases-list').innerHTML='<div class="empty-state"><p>Failed to load</p></div>'; }
+  } catch(e) { document.getElementById('cases-list').innerHTML=`<div class="empty-state"><p>${t('failed_to_load')}</p></div>`; }
 }
 
 function renderCases() {
@@ -658,21 +904,21 @@ function renderCases() {
     return true;
   });
   const cont=document.getElementById('cases-list');
-  if(!cases.length) { cont.innerHTML='<div class="empty-state"><div class="empty-icon">👥</div><p>No cases match</p></div>'; return; }
+  if(!cases.length) { cont.innerHTML=`<div class="empty-state"><div class="empty-icon">👥</div><p>${t('no_cases_match')}</p></div>`; return; }
   cont.innerHTML=cases.map(c=>`
     <div class="case-row" onclick="openCase('${c.h_alpha}')">
       <div class="case-meta">
         <div class="case-info">
           <strong>${c.case_code||'—'}</strong>
-          ${c.overdue?'<span class="overdue-badge">Overdue</span>':''}
-          ${c.is_at_risk?'<span class="risk-badge">⚠ Risk</span>':''}
+          ${c.overdue?`<span class="overdue-badge">${t('filter_overdue')}</span>`:''}
+          ${c.is_at_risk?`<span class="risk-badge">⚠ ${t('filter_risk')}</span>`:''}
         </div>
         <div class="case-hash">${c.h_alpha}</div>
       </div>
       <div class="case-actions">
         <div style="text-align:right">
-          <div><span class="stage-pill stage-${c.current_stage}">Stage ${c.current_stage}</span></div>
-          <div style="font-size:0.72rem;color:var(--muted);margin-top:0.25rem">${c.session_count} session${c.session_count!==1?'s':''} ${c.last_score!==null?'· '+c.last_score+' pts':''}</div>
+          <div><span class="stage-pill stage-${c.current_stage}">${t('stage')} ${c.current_stage}</span></div>
+          <div style="font-size:0.72rem;color:var(--muted);margin-top:0.25rem">${c.session_count} ${t('sessions').toLowerCase()} ${c.last_score!==null?'· '+c.last_score+' pts':''}</div>
         </div>
       </div>
     </div>`).join('');
@@ -703,18 +949,18 @@ function renderSessions() {
     if(SESSION_FILTER==='past' && s.is_upcoming) return false;
     return true;
   });
-  if(!sessions.length) { cont.innerHTML='<div class="empty-state"><div class="empty-icon">📅</div><p>No sessions found</p></div>'; return; }
+  if(!sessions.length) { cont.innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><p>${t('no_sessions_found')}</p></div>`; return; }
   cont.innerHTML=sessions.map(s=>`
     <div class="session-entry">
       <div class="session-left">
         <div class="session-dot ${s.is_upcoming?'upcoming':'past'}"></div>
         <div class="session-info">
           <div class="session-date">${(s.scheduled_at||s.held_at||'').slice(0,16).replace('T',' ')}</div>
-          <div class="session-meta">${s.case_code||s.h_alpha?.slice(0,12)+'...'} · ${s.session_type} ${s.notes?'· '+s.notes.slice(0,40):''}${s.notes?.length>40?'...':''}</div>
+          <div class="session-meta">${s.case_code||s.h_alpha?.slice(0,12)+'...'} · ${translateSessionType(s.session_type)} ${s.notes?'· '+s.notes.slice(0,40):''}${s.notes?.length>40?'...':''}</div>
         </div>
       </div>
       <div style="display:flex;gap:0.5rem;align-items:center">
-        <span style="font-size:0.72rem;color:var(--muted)">${s.is_upcoming?'Upcoming':'Past'}</span>
+        <span style="font-size:0.72rem;color:var(--muted)">${s.is_upcoming?t('upcoming'):t('past')}</span>
         <button class="btn btn-danger btn-sm" onclick="deleteSession(${s.id},event)">✕</button>
       </div>
     </div>`).join('');
@@ -730,7 +976,7 @@ function setSessionFilter(f,btn) {
 async function deleteSession(id,e) {
   e.stopPropagation();
   const btn=e.target;
-  if(!confirm('Delete this session?')) return;
+  if(!confirm(t('confirm_delete_session'))) return;
   btn.disabled=true;
   try {
     const res=await fetch(`${API}/session/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
@@ -748,30 +994,30 @@ async function openCase(h_alpha) {
     const res=await fetch(`${API}/case/${h_alpha}`,{headers:{Authorization:`Bearer ${TOKEN}`}});
     const d=await res.json();
     const found=ALL_CASES.find(c=>c.h_alpha===h_alpha);
-    document.getElementById('detail-case-code').textContent=found?.case_code||'Case Detail';
+    document.getElementById('detail-case-code').textContent=found?.case_code||'—';
     const pill=document.getElementById('detail-stage-pill');
     const pill2=document.getElementById('detail-stage-pill2');
-    pill.className=`stage-pill stage-${d.current_stage}`; pill.textContent=`Stage ${d.current_stage}`;
-    pill2.className=`stage-pill stage-${d.current_stage}`; pill2.textContent=`Stage ${d.current_stage}`;
-    document.getElementById('detail-stage-name').textContent=STAGE_NAMES[d.current_stage]||'';
+    pill.className=`stage-pill stage-${d.current_stage}`; pill.textContent=`${t('stage')} ${d.current_stage}`;
+    pill2.className=`stage-pill stage-${d.current_stage}`; pill2.textContent=`${t('stage')} ${d.current_stage}`;
+    document.getElementById('detail-stage-name').textContent=STAGE_NAMES[LANG][d.current_stage]||'';
     document.getElementById('detail-intake').textContent=d.intake_date;
     if(found?.is_at_risk) {
       document.getElementById('detail-risk-badge').style.display='';
-      document.getElementById('risk-toggle-btn').textContent='✓ Unflag Risk';
+      document.getElementById('risk-toggle-btn').innerHTML=t('unflag_risk');
     } else {
       document.getElementById('detail-risk-badge').style.display='none';
-      document.getElementById('risk-toggle-btn').textContent='⚠ Flag Risk';
+      document.getElementById('risk-toggle-btn').innerHTML='⚠ '+t('flag_risk');
     }
     if(d.recovery_velocity!==null) {
       document.getElementById('velocity-section').style.display='block';
       document.getElementById('detail-velocity').textContent=(d.recovery_velocity>0?'+':'')+d.recovery_velocity;
-      document.getElementById('detail-velocity-desc').textContent=`Change between last two assessments (${d.recovery_velocity} pts/day) — clinical judgment required`;
+      document.getElementById('detail-velocity-desc').textContent=`${d.recovery_velocity} ${t('pts_day')} — ${t('clinical_judgment')}`;
     } else { document.getElementById('velocity-section').style.display='none'; }
     const aContainer=document.getElementById('detail-assessments');
-    if(!d.assessments.length) { aContainer.innerHTML='<div class="empty-state"><p>No assessments yet</p></div>'; }
-    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">Stage ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div><button class="btn btn-danger btn-sm" onclick="deleteAssessment(${a.id},this)">✕</button></div>`).join('')}</div>`; }
+    if(!d.assessments.length) { aContainer.innerHTML=`<div class="empty-state"><p>${t('no_assessments')}</p></div>`; }
+    else { aContainer.innerHTML=`<div class="score-timeline">${d.assessments.map(a=>`<div class="score-entry"><div class="score-date">${a.assessed_at.slice(0,10)}<br><span style="font-size:0.68rem;color:var(--muted)">${t('stage')} ${a.stage}</span></div><div class="score-bar-wrap"><div class="score-bar" style="width:${a.score}%"></div></div><div class="score-num">${a.score}</div><button class="btn btn-danger btn-sm" onclick="deleteAssessment(${a.id},this)">✕</button></div>`).join('')}</div>`; }
     const sContainer=document.getElementById('detail-sessions');
-    if(!d.sessions.length) { sContainer.innerHTML='<div class="empty-state"><p>No sessions yet</p></div>'; }
+    if(!d.sessions.length) { sContainer.innerHTML=`<div class="empty-state"><p>${t('no_sessions_yet')}</p></div>`; }
     else { sContainer.innerHTML=d.sessions.map(s=>`<div class="session-entry"><div class="session-left"><div class="session-dot past"></div><div class="session-info"><div class="session-date">${s.held_at.slice(0,16).replace('T',' ')}</div></div></div></div>`).join(''); }
   } catch(e) { console.error(e); }
 }
@@ -784,18 +1030,19 @@ function openAssessmentModal() {
 }
 
 async function submitModalAssessment(btn) {
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Submitting...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('submitting');
   try {
     const res=await fetch(`${API}/assessment`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,stage:parseInt(document.getElementById('modal-stage').value),score:parseFloat(document.getElementById('modal-score').value),assessed_by:USER.id})});
+    const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
-    showAlert('modal-assessment-success','Assessment logged.');
+    showAlert('modal-assessment-success',t('assessment_logged'));
     setTimeout(()=>{ closeModal('assessment-modal'); openCase(CURRENT_CASE); },800);
- } catch(e) { showAlert('modal-assessment-error',e.message); }
+  } catch(e) { showAlert('modal-assessment-error',e.message); }
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
 async function deleteAssessment(id,btn) {
-  if(!confirm('Delete this assessment?')) return;
+  if(!confirm(t('confirm_delete_assessment'))) return;
   if(btn) btn.disabled=true;
   try {
     const res=await fetch(`${API}/assessment/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
@@ -811,16 +1058,14 @@ function openSessionFromDetail() {
 }
 
 async function submitModalSession(btn) {
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Saving...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('saving');
   try {
     const dateVal=document.getElementById('modal-session-date').value;
     const isFuture=new Date(dateVal) > new Date();
     const res=await fetch(`${API}/log-session`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,psych_id:USER.id,held_at:dateVal,scheduled_at:isFuture?dateVal:null,session_type:document.getElementById('modal-session-type').value,notes:document.getElementById('modal-session-notes').value})});
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
-    showAlert('modal-session-success','Session logged.');
-    loadDashboard();
-    setTishowAlert('modal-session-success','Session logged.');
+    showAlert('modal-session-success',t('session_logged'));
     loadDashboard();
     setTimeout(()=>{ closeModal('session-modal'); openCase(CURRENT_CASE); },800);
   } catch(e) { showAlert('modal-session-error',e.message); }
@@ -833,8 +1078,8 @@ async function advanceStageFromDetail(btn) {
     const res=await fetch(`${API}/case/${CURRENT_CASE}`,{headers:{Authorization:`Bearer ${TOKEN}`}});
     const d=await res.json();
     const next=d.current_stage+1;
-    if(next>5) { alert('Already at stage 5.'); return; }
-    if(!confirm(`Advance to Stage ${next} — ${STAGE_NAMES[next]}?`)) return;
+    if(next>5) { alert(t('already_stage5')); return; }
+    if(!confirm(`${t('confirm_advance')} ${next} — ${STAGE_NAMES[LANG][next]}?`)) return;
     const res2=await fetch(`${API}/advance-stage`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,to_stage:next})});
     const d2=await res2.json();
     if(!res2.ok) throw new Error(d2.detail);
@@ -848,11 +1093,11 @@ async function toggleRisk(btn) {
   const found=ALL_CASES.find(c=>c.h_alpha===CURRENT_CASE);
   const isRisk=found?.is_at_risk;
   const endpoint=isRisk?'unflag-risk':'flag-risk';
-  if(!confirm(isRisk?'Remove at-risk flag from this case?':'Flag this case as at-risk?')) return;
+  if(!confirm(isRisk?t('confirm_unflag'):t('confirm_flag'))) { if(btn) btn.disabled=false; return; }
   try {
     await fetch(`${API}/${endpoint}/${CURRENT_CASE}`,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`}});
     document.getElementById('detail-risk-badge').style.display=isRisk?'none':'';
-    document.getElementById('risk-toggle-btn').textContent=isRisk?'⚠ Flag Risk':'✓ Unflag Risk';
+    document.getElementById('risk-toggle-btn').innerHTML=isRisk?('⚠ '+t('flag_risk')):t('unflag_risk');
     if(found) found.is_at_risk=!isRisk;
   } catch(e) {}
   finally { if(btn) btn.disabled=false; }
@@ -861,7 +1106,7 @@ async function toggleRisk(btn) {
 function openTransferModal() { openModal('transfer-modal'); }
 
 async function submitTransfer(btn) {
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Transferring...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('transferring');
   try {
     const res=await fetch(`${API}/transfer-case`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha:CURRENT_CASE,to_psych_id:parseInt(document.getElementById('modal-transfer-id').value)})});
     const d=await res.json();
@@ -873,7 +1118,7 @@ async function submitTransfer(btn) {
 }
 
 async function deleteCase(btn) {
-  if(!confirm('Delete this case? It will be hidden but preserved for admin review.')) return;
+  if(!confirm(t('confirm_delete_case'))) return;
   if(btn) btn.disabled=true;
   try {
     const res=await fetch(`${API}/case/${CURRENT_CASE}`,{method:'DELETE',headers:{Authorization:`Bearer ${TOKEN}`}});
@@ -891,21 +1136,21 @@ function resolveCase() {
     const found=ALL_CASES.find(c=>c.case_code?.toLowerCase()===val.toLowerCase()||c.h_alpha===val);
     if(found) {
       document.getElementById('sched-case-preview').style.display='block';
-      document.getElementById('sched-case-preview').innerHTML=`<strong>${found.case_code}</strong> · Stage ${found.current_stage} · ${found.session_count} sessions<br><span style="font-size:0.72rem;color:var(--muted)">${found.h_alpha}</span>`;
+      document.getElementById('sched-case-preview').innerHTML=`<strong>${found.case_code}</strong> · ${t('stage')} ${found.current_stage} · ${found.session_count} ${t('sessions').toLowerCase()}<br><span style="font-size:0.72rem;color:var(--muted)">${found.h_alpha}</span>`;
       document.getElementById('sched-hash').dataset.resolved=found.h_alpha;
     }
   },400);
 }
 
 async function submitSchedule(btn) {
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Saving...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('saving');
   try {
     const raw=document.getElementById('sched-hash').value.trim();
     const h_alpha=document.getElementById('sched-hash').dataset.resolved||raw;
     const res=await fetch(`${API}/log-session`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({h_alpha,psych_id:USER.id,held_at:document.getElementById('sched-date').value,scheduled_at:document.getElementById('sched-date').value,session_type:document.getElementById('sched-type').value,notes:document.getElementById('sched-notes').value})});
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
-    showAlert('schedule-success','Session saved.');
+    showAlert('schedule-success',t('session_saved'));
     document.getElementById('sched-hash').value='';
     document.getElementById('sched-notes').value='';
     document.getElementById('sched-case-preview').style.display='none';
@@ -915,14 +1160,14 @@ async function submitSchedule(btn) {
 }
 
 async function submitIntake(btn) {
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Registering...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('registering');
   try {
     const res=await fetch(`${API}/intake`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${TOKEN}`},body:JSON.stringify({child_name:document.getElementById('intake-name').value,birth_date:document.getElementById('intake-dob').value,assigned_psych_id:parseInt(document.getElementById('intake-psych').value),case_code:document.getElementById('intake-code').value})});
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
     document.getElementById('intake-hash').textContent=d.h_alpha;
     document.getElementById('intake-result').classList.add('show');
-    showAlert('intake-success','Case registered. Save the hash below.');
+    showAlert('intake-success',t('case_registered'));
   } catch(e) { showAlert('intake-error',e.message); }
   finally { btn.disabled=false; btn.textContent=original; }
 }
@@ -932,25 +1177,28 @@ async function loadTransactions() {
     const res=await fetch(`${API}/transactions`);
     const d=await res.json();
     const tbody=document.getElementById('ledger-tbody');
-    if(!d.transactions.length) { tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No transactions yet</td></tr>'; return; }
-    tbody.innerHTML=d.transactions.map(t=>`<tr><td>${t.reference}</td><td>${t.category}</td><td>${t.amount.toLocaleString()} ${t.currency}</td><td><span class="badge badge-${t.direction}">${t.direction==='in'?'Income':'Expense'}</span></td></tr>`).join('');
+    if(!d.transactions.length) { tbody.innerHTML=`<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">${t('no_transactions')}</td></tr>`; return; }
+    tbody.innerHTML=d.transactions.map(tx=>`<tr><td>${tx.reference}</td><td>${tx.category}</td><td>${tx.amount.toLocaleString()} ${tx.currency}</td><td><span class="badge badge-${tx.direction}">${tx.direction==='in'?t('income'):t('expense')}</span></td></tr>`).join('');
   } catch(e) {}
 }
 
 async function submitTransaction(btn) {
-  btn.disabled=true; const original=btn.textContent; btn.textContent='Recording...';
+  btn.disabled=true; const original=btn.textContent; btn.textContent=t('recording');
   try {
     const res=await fetch(`${API}/transaction`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:parseFloat(document.getElementById('ledger-amount').value),direction:document.getElementById('ledger-direction').value,category:document.getElementById('ledger-category').value,reference:document.getElementById('ledger-reference').value,recorded_by:1})});
     const d=await res.json();
     if(!res.ok) throw new Error(d.detail);
-    showAlert('ledger-success','Transaction recorded.');
+    showAlert('ledger-success',t('transaction_recorded'));
     loadTransactions();
   } catch(e) { showAlert('ledger-error',e.message); }
   finally { btn.disabled=false; btn.textContent=original; }
 }
 
 function logout() { TOKEN=''; USER={}; CURRENT_CASE=null; ALL_CASES=[]; ALL_SESSIONS=[]; document.getElementById('auth-screen').style.display=''; document.getElementById('app-screen').style.display='none'; }
-document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!TOKEN) login(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!TOKEN) { const btn=document.querySelector('.auth-card .btn-primary'); login(btn); } });
+
+// init language on load
+applyTranslations();
 </script>
 </body>
 </html>
