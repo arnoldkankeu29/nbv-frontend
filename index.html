@@ -773,7 +773,7 @@ function applyTranslations() {
   });
   // dynamic bits that aren't simple data-i18n
   if (Object.keys(USER).length) {
-    document.getElementById('dash-greeting').textContent = `${greeting()}, ${USER.name.split(' ')[0]}`;
+    document.getElementById('dash-greeting').textContent = `${greeting()}, ${USER.name}`;
   }
 }
 
@@ -824,7 +824,7 @@ function initApp() {
   document.getElementById('user-avatar').textContent=USER.name.charAt(0).toUpperCase();
   document.getElementById('user-id-display').textContent=USER.id;
   document.getElementById('dash-role').textContent=USER.role;
-  document.getElementById('dash-greeting').textContent=`${greeting()}, ${USER.name.split(' ')[0]}`;
+  document.getElementById('dash-greeting').textContent=`${greeting()}, ${USER.name}`;
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString(LANG==='fr'?'fr-FR':'en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   // set today's date as default for schedule
   const now=new Date(); now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
